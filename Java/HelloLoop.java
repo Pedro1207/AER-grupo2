@@ -10,7 +10,8 @@ public class HelloLoop extends Thread {
         while(true){
             try {
                 publisher.multicast("HELLO");
-            } catch (IOException e) {
+                Thread.sleep(3000);
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
