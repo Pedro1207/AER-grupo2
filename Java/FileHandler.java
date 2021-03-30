@@ -53,17 +53,4 @@ public class FileHandler {
 		raf.write(content,0,diff);
 	}
 	
-	public static void main(String[] args){
-		
-		FileHandler fh = new FileHandler("example.txt");
-		FileHandler write = new FileHandler("example2.txt");
-		try {
-			byte[] content = fh.readBytes(0, 2);
-			write.writeBytes(content,0,2);
-			System.out.println(new String(content, StandardCharsets.UTF_8));
-		}
-		catch(IOException exc){
-			exc.printStackTrace();
-		}
-	}
 }
