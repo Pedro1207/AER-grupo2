@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.*;
 import java.util.List;
 
 public class MulticastReceiver extends Thread {
@@ -43,8 +41,10 @@ public class MulticastReceiver extends Thread {
         try {
             if (received.equals("HELLO")) {
                 registerAddress(address);
-            } else if(received.startsWith("NEWNODE")){
-
+            } else if (received.startsWith("NEWNODE")) {
+                registerNewNode(received);
+            } else if(received.startsWith("KNOWN")){
+                registerKnown(received);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,18 +53,40 @@ public class MulticastReceiver extends Thread {
 
     }
 
-    private void registerAddress(InetAddress address) throws IOException {
-        if (!this.knownAddresses.contains(address)) {
-            publisher.multicast("NEWNODE;" + address.toString());
+    private void registerKnown(String received) throws UnknownHostException {
+        String[] strArray = received.split(";");
+        synchronized (knownAddresses) {
+            for(int i = 1; i < strArray.length; i++){
+                knownAddresses.add(InetAddress.getByName(strArray[i]));
+            }
+        }
+    }
 
-            boolean done = false;
-            StringBuilder message = new StringBuilder("KNOWN;");
-            synchronized (knownAddresses) {
+    private void registerNewNode(String received) throws IOException {
+        String[] strArray = received.split(";");
+        InetAddress address = InetAddress.getByName(strArray[1]);
+        synchronized (knownAddresses) {
+            if (!this.knownAddresses.contains(address)) {
+                publisher.multicast("NEWNODE;" + address.toString());
+                knownAddresses.add(address);
+            }
+        }
+    }
+
+    private void registerAddress(InetAddress address) throws IOException {
+
+            if (!this.knownAddresses.contains(address)) {
+                publisher.multicast("NEWNODE;" + address.toString());
+
+                boolean done = false;
+                StringBuilder message = new StringBuilder("KNOWN;");
+
+                synchronized (knownAddresses) {
                 knownAddresses.add(address);
                 for (int i = 0; i < knownAddresses.size(); i++) {
                     message.append(knownAddresses.get(i)).append(";");
                     if (i != 0 && i % 5 == 0) {
-                        publisher.unicast(message.toString(), address);
+                        publisher.unicast(message.substring(0, message.length() - 1), address);
                         message = new StringBuilder("KNOWN;");
                     }
                 }
