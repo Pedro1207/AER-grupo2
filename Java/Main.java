@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
 
@@ -16,6 +16,12 @@ public class Main {
         HelloLoop helloLoop = new HelloLoop();
         Thread t2 = new Thread(helloLoop);
         t2.start();
+
+
+        while(true){
+            System.out.println(knownAddresses);
+            Thread.sleep(3000);
+        }
 
 
     }

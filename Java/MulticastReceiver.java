@@ -68,7 +68,7 @@ public class MulticastReceiver extends Thread {
         InetAddress address = InetAddress.getByName(strArray[1]);
         synchronized (knownAddresses) {
             if (!this.knownAddresses.contains(address)) {
-                publisher.multicast("NEWNODE;" + address.getHostName());
+                publisher.multicast("NEWNODE;" + address.getHostAddress());
                 knownAddresses.add(address);
             }
         }
@@ -77,7 +77,7 @@ public class MulticastReceiver extends Thread {
     private void registerAddress(InetAddress address) throws IOException {
         synchronized (knownAddresses) {
             if (!this.knownAddresses.contains(address)) {
-                publisher.multicast("NEWNODE;" + address.getHostName());
+                publisher.multicast("NEWNODE;" + address.getHostAddress());
 
                 boolean done = false;
                 StringBuilder message = new StringBuilder("KNOWN;");
@@ -85,7 +85,7 @@ public class MulticastReceiver extends Thread {
 
                 knownAddresses.add(address);
                 for (int i = 0; i < knownAddresses.size(); i++) {
-                    message.append(knownAddresses.get(i).getHostName()).append(";");
+                    message.append(knownAddresses.get(i).getHostAddress()).append(";");
                     if (i != 0 && i % 5 == 0) {
                         publisher.unicast(message.substring(0, message.length() - 1), address);
                         message = new StringBuilder("KNOWN;");
