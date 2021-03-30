@@ -10,6 +10,7 @@ public class MulticastReceiver extends Thread {
 
     public MulticastReceiver(List<InetAddress> knownAddresses) {
         this.knownAddresses = knownAddresses;
+        publisher = new Publisher();
     }
 
     public void run() {
@@ -43,7 +44,7 @@ public class MulticastReceiver extends Thread {
                 registerAddress(address);
             } else if (received.startsWith("NEWNODE")) {
                 registerNewNode(received);
-            } else if(received.startsWith("KNOWN")){
+            } else if (received.startsWith("KNOWN")) {
                 registerKnown(received);
             }
         } catch (IOException e) {
@@ -56,7 +57,7 @@ public class MulticastReceiver extends Thread {
     private void registerKnown(String received) throws UnknownHostException {
         String[] strArray = received.split(";");
         synchronized (knownAddresses) {
-            for(int i = 1; i < strArray.length; i++){
+            for (int i = 1; i < strArray.length; i++) {
                 knownAddresses.add(InetAddress.getByName(strArray[i]));
             }
         }
@@ -67,30 +68,30 @@ public class MulticastReceiver extends Thread {
         InetAddress address = InetAddress.getByName(strArray[1]);
         synchronized (knownAddresses) {
             if (!this.knownAddresses.contains(address)) {
-                publisher.multicast("NEWNODE;" + address.toString());
+                publisher.multicast("NEWNODE;" + address.getHostName());
                 knownAddresses.add(address);
             }
         }
     }
 
     private void registerAddress(InetAddress address) throws IOException {
-
+        synchronized (knownAddresses) {
             if (!this.knownAddresses.contains(address)) {
-                publisher.multicast("NEWNODE;" + address.toString());
+                publisher.multicast("NEWNODE;" + address.getHostName());
 
                 boolean done = false;
                 StringBuilder message = new StringBuilder("KNOWN;");
 
-                synchronized (knownAddresses) {
+
                 knownAddresses.add(address);
                 for (int i = 0; i < knownAddresses.size(); i++) {
-                    message.append(knownAddresses.get(i)).append(";");
+                    message.append(knownAddresses.get(i).getHostName()).append(";");
                     if (i != 0 && i % 5 == 0) {
                         publisher.unicast(message.substring(0, message.length() - 1), address);
                         message = new StringBuilder("KNOWN;");
                     }
                 }
-                publisher.unicast(message.toString(), address);
+                publisher.unicast(message.toString().substring(0, message.length() - 1), address);
 
             }
         }
