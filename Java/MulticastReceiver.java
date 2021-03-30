@@ -58,7 +58,10 @@ public class MulticastReceiver extends Thread {
         String[] strArray = received.split(";");
         synchronized (knownAddresses) {
             for (int i = 1; i < strArray.length; i++) {
-                knownAddresses.add(InetAddress.getByName(strArray[i]));
+                InetAddress address = InetAddress.getByName(strArray[i]);
+                if (!this.knownAddresses.contains(address)) {
+                    knownAddresses.add(address);
+                }
             }
         }
     }
