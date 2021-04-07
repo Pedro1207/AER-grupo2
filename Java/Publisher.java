@@ -18,11 +18,11 @@ public class Publisher {
         socket.close();
     }
 
-    public void unicast(String message, InetAddress address) throws IOException {
+    public void unicast(String message, InetAddress address, int port) throws IOException {
         socket = new DatagramSocket();
         buf = message.getBytes();
 
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 10000);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
         socket.send(packet);
         socket.close();
     }
