@@ -1,6 +1,5 @@
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.UnknownHostException;
+import java.io.IOException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,15 +7,16 @@ import java.util.List;
 public class FileFinder {
 
     private final List<InetAddress> knowAddresses;
+    private final Publisher publisher;
 
     public FileFinder(List<InetAddress> knowAddresses){
         this.knowAddresses = knowAddresses;
+        this.publisher = new Publisher();
     }
 
-    public List<InetAddress> findFile(String searchTerm) throws UnknownHostException {
+    public ArrayList<FileInfo> findFile(String searchTerm) throws IOException {
 
         ArrayList<InetAddress> addresses = new ArrayList<>();
-        List<InetAddress> possibleAddresses = Collections.synchronizedList(new ArrayList<>());
 
         synchronized (this.knowAddresses){
             for (InetAddress knownAddress : this.knowAddresses) {
@@ -24,10 +24,19 @@ public class FileFinder {
             }
         }
 
-        return possibleAddresses;
+        ArrayList<FileInfo> fileInfos = new ArrayList<>();
+        FileAnswersListener fal = new FileAnswersListener(fileInfos);
+        Thread t = new Thread(fal);
+        t.start();
+
+
+        for(int i = 1; i < addresses.size(); i++){
+            publisher.unicast("s;" + addresses.get(0).getHostAddress() + ";" + searchTerm + ";" + System.currentTimeMillis() + ";5", addresses.get(i), 10001);
+        }
+
+        return fileInfos;
 
     }
-
 
 
 

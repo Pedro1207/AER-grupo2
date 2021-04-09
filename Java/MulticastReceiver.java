@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MulticastReceiver extends Thread {
     protected MulticastSocket socket = null;
-    protected byte[] buf = new byte[256];
+    protected byte[] buf = new byte[1024];
     private final List<InetAddress> knownAddresses;
     private Publisher publisher;
 
