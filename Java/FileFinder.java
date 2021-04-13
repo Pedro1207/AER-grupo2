@@ -25,13 +25,13 @@ public class FileFinder {
         }
 
         ArrayList<FileInfo> fileInfos = new ArrayList<>();
-        FileAnswersListener fal = new FileAnswersListener(fileInfos);
+        FileAnswersListener fal = new FileAnswersListener(fileInfos, System.currentTimeMillis());
         Thread t = new Thread(fal);
         t.start();
 
 
         for(int i = 1; i < addresses.size(); i++){
-            publisher.unicast("s;" + addresses.get(0).getHostAddress() + ";" + searchTerm + ";" + System.currentTimeMillis() + ";5", addresses.get(i), 10001);
+            publisher.unicast("s;" + addresses.get(0).getHostAddress() + ";" + searchTerm + ";5", addresses.get(i), 10001);
         }
 
         return fileInfos;

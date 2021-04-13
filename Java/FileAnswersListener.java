@@ -6,9 +6,11 @@ public class FileAnswersListener implements Runnable {
 
 
     ArrayList<FileInfo> fileInfos;
+    long currentTime;
 
-    public FileAnswersListener(ArrayList<FileInfo> fileInfos) {
+    public FileAnswersListener(ArrayList<FileInfo> fileInfos, long currentTime) {
         this.fileInfos = fileInfos;
+        this.currentTime = currentTime;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class FileAnswersListener implements Runnable {
             String[] strArray;
             FileInfo fileInfo;
             strArray = received.split(";");
-            fileInfo = new FileInfo(strArray[1], InetAddress.getByName(strArray[2]), Integer.parseInt(strArray[3]), time - Long.parseLong(strArray[4]));
+            fileInfo = new FileInfo(strArray[1], InetAddress.getByName(strArray[2]), Integer.parseInt(strArray[3]), time - this.currentTime);
             return fileInfo;
         } else{
             return null;
