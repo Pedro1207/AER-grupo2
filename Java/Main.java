@@ -12,12 +12,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        /*
+
         Publisher publisher = new Publisher();
         InetAddress ownAdress = publisher.getOwnAddress();
-*/
-
-        System.out.println(InetAddress.getLocalHost());
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
 

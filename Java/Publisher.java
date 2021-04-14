@@ -33,12 +33,14 @@ public class Publisher {
     public InetAddress getOwnAddress() {
         try {
             DatagramSocket socket = new DatagramSocket(10010);
-        } catch (SocketException e) {
+            byte[] buf = new byte[100];
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getLoopbackAddress(), 10010);
+            socket.send(packet);
+            socket.receive(packet);
+            System.out.println(packet.getAddress());
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        byte[] buf = new byte[100];
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getLoopbackAddress(), 10010);
         return null;
     }
 }
