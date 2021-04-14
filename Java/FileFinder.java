@@ -34,6 +34,12 @@ public class FileFinder {
             publisher.unicast("s;" + addresses.get(0).getHostAddress() + ";" + searchTerm + ";5", addresses.get(i), 10001);
         }
 
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         return fileInfos;
 
     }
