@@ -20,6 +20,10 @@ public class Main {
         Thread t2 = new Thread(helloLoop);
         t2.start();
 
+        FilefinderServer filefinderServer = new FilefinderServer(knownAddresses);
+        Thread t3 = new Thread(filefinderServer);
+        t3.start();
+
 
         FileFinder fileFinder = new FileFinder(knownAddresses);
         InputStreamReader streamReader = new InputStreamReader(System.in);

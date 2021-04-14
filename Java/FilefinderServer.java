@@ -1,12 +1,13 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FilefinderServer implements Runnable {
 
-    final private ArrayList<InetAddress> knowAddresses;
+    final private List<InetAddress> knowAddresses;
 
-    public FilefinderServer(ArrayList<InetAddress> knowAddresses) {
+    public FilefinderServer(List<InetAddress> knowAddresses) {
         this.knowAddresses = knowAddresses;
     }
 
