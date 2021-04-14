@@ -17,7 +17,7 @@ public class FileAnswersListener implements Runnable {
     public void run() {
         DatagramSocket socket = null;
         try {
-            socket = new DatagramSocket(10001);
+            socket = new DatagramSocket(10002);
             socket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
@@ -44,6 +44,7 @@ public class FileAnswersListener implements Runnable {
 
     private FileInfo interpretPacket(DatagramPacket packet, long time) throws UnknownHostException {
         String received = new String(packet.getData(), 0, packet.getLength());
+        System.out.println(received);
 
         if(received.startsWith("HAVEFILE")) {
             String[] strArray;

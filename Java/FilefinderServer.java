@@ -67,7 +67,7 @@ public class FilefinderServer implements Runnable {
 
         int fileSize = 10;
         if(/*check file*/fileSize > 5){
-            publisher.unicast("HAVEFILE;" + addresses.get(0).getHostAddress() + ";" + fileSize, returnAddress, 10001);
+            publisher.unicast("HAVEFILE;" + addresses.get(0).getHostAddress() + ";" + fileSize, returnAddress, 10002);
         }
 
         InetAddress packetAddress = packet.getAddress();
