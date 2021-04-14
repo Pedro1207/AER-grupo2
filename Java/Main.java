@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,6 +24,11 @@ public class Main {
         FilefinderServer filefinderServer = new FilefinderServer(knownAddresses);
         Thread t3 = new Thread(filefinderServer);
         t3.start();
+
+
+        byte[] buf = new byte[256];
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 10000);
+        System.out.println(packet.getSocketAddress());
 
 
         FileFinder fileFinder = new FileFinder(knownAddresses);
