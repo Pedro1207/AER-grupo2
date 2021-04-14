@@ -39,6 +39,8 @@ public class MulticastReceiver extends Thread {
 
     private void interpret(String received, InetAddress address) {
 
+        System.out.println(knownAddresses);
+
         try {
             if (received.equals("HELLO")) {
                 registerAddress(address);

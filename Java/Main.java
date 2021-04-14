@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -5,7 +8,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
 
@@ -18,10 +21,13 @@ public class Main {
         t2.start();
 
 
-
+        FileFinder fileFinder = new FileFinder(knownAddresses);
+        InputStreamReader streamReader = new InputStreamReader(System.in);
+        BufferedReader bufferedReader = new BufferedReader(streamReader);
+        String line;
         while(true){
-            System.out.println(knownAddresses);
-            Thread.sleep(3000);
+            line = bufferedReader.readLine();
+            System.out.println("ola + " + fileFinder.findFile("ola"));
         }
 
 

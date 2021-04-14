@@ -37,7 +37,7 @@ public class FileAnswersListener implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("No more answers received");
         }
     }
 
