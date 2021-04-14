@@ -12,15 +12,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-
         Publisher publisher = new Publisher();
-        InetAddress ownAdress = publisher.getOwnAddress();
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
 
         MulticastReceiver multicastReceiver = new MulticastReceiver(knownAddresses);
         Thread t = new Thread(multicastReceiver);
         t.start();
+
+        InetAddress ownAdress = publisher.getOwnAddress();
 
         HelloLoop helloLoop = new HelloLoop();
         Thread t2 = new Thread(helloLoop);

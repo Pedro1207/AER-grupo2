@@ -44,7 +44,17 @@ public class MulticastReceiver extends Thread {
         try {
             if (received.equals("HELLO")) {
                 registerAddress(address);
+            } else if(received.equals("MYADDRESS")){
+                giveOwnAddress(address);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void giveOwnAddress(InetAddress address) {
+        try {
+            publisher.unicast(address.getHostAddress(), address, 10010);
         } catch (IOException e) {
             e.printStackTrace();
         }

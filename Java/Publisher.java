@@ -30,17 +30,33 @@ public class Publisher {
         socket.close();
     }
 
-    public InetAddress getOwnAddress() {
+    public InetAddress getOwnAddress() throws IOException {
+        DatagramSocket socket = new DatagramSocket(10010);
+        socket.setSoTimeout(500);
+
+        this.multicast("MYADDRESS");
+
         try {
-            DatagramSocket socket = new DatagramSocket(10010);
-            byte[] buf = new byte[100];
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getLoopbackAddress(), 10010);
-            socket.send(packet);
-            socket.receive(packet);
-            System.out.println(packet.getAddress());
-        } catch (IOException e) {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        byte[] buf = new byte[256];
+        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+        boolean found = false;
+        try{
+            while(!found){
+                socket.receive(packet);
+                found = true;
+            }
+        } catch (SocketException e){
+            System.out.println("Trying again.");
+        }
+        String received = new String(packet.getData(), 0, packet.getLength());
+        System.out.println(received + " ahahah");
+
+
         return null;
     }
 }
