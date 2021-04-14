@@ -27,7 +27,7 @@ public class FileFinder {
         }
 
         ArrayList<FileInfo> fileInfos = new ArrayList<>();
-        FileAnswersListener fal = new FileAnswersListener(fileInfos, System.currentTimeMillis());
+        FileAnswersListener fal = new FileAnswersListener(fileInfos, System.currentTimeMillis(), searchTerm);
         Thread t = new Thread(fal);
         t.start();
 

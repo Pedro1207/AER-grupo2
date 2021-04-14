@@ -5,12 +5,14 @@ import java.util.ArrayList;
 public class FileAnswersListener implements Runnable {
 
 
-    ArrayList<FileInfo> fileInfos;
-    long currentTime;
+    private ArrayList<FileInfo> fileInfos;
+    private long currentTime;
+    private String searchTerm;
 
-    public FileAnswersListener(ArrayList<FileInfo> fileInfos, long currentTime) {
+    public FileAnswersListener(ArrayList<FileInfo> fileInfos, long currentTime, String searchTerm) {
         this.fileInfos = fileInfos;
         this.currentTime = currentTime;
+        this.searchTerm = searchTerm;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class FileAnswersListener implements Runnable {
             String[] strArray;
             FileInfo fileInfo;
             strArray = received.split(";");
-            fileInfo = new FileInfo(strArray[1], InetAddress.getByName(strArray[2]), Integer.parseInt(strArray[3]), time - this.currentTime);
+            fileInfo = new FileInfo(this.searchTerm, InetAddress.getByName(strArray[1]), Integer.parseInt(strArray[2]), time - this.currentTime);
             return fileInfo;
         } else{
             return null;
