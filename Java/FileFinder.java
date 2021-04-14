@@ -8,10 +8,12 @@ public class FileFinder {
 
     private final List<InetAddress> knowAddresses;
     private final Publisher publisher;
+    private InetAddress ownAddress;
 
-    public FileFinder(List<InetAddress> knowAddresses){
+    public FileFinder(List<InetAddress> knowAddresses, InetAddress ownAddress){
         this.knowAddresses = knowAddresses;
         this.publisher = new Publisher();
+        this.ownAddress = ownAddress;
     }
 
     public ArrayList<FileInfo> findFile(String searchTerm) throws IOException {
@@ -30,9 +32,9 @@ public class FileFinder {
         t.start();
 
 
-        for(int i = 1; i < addresses.size(); i++){
+        for(int i = 0; i < addresses.size(); i++){
             System.out.println(addresses.get(i));
-            publisher.unicast("s;" + addresses.get(0).getHostAddress() + ";" + searchTerm + ";5", addresses.get(i), 10001);
+            publisher.unicast("s;" + this.ownAddress + ";" + searchTerm + ";5", addresses.get(i), 10001);
         }
 
         try {

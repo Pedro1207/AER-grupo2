@@ -27,11 +27,11 @@ public class Main {
         Thread t2 = new Thread(helloLoop);
         t2.start();
 
-        FilefinderServer filefinderServer = new FilefinderServer(knownAddresses);
+        FilefinderServer filefinderServer = new FilefinderServer(knownAddresses, ownAdress);
         Thread t3 = new Thread(filefinderServer);
         t3.start();
 
-        FileFinder fileFinder = new FileFinder(knownAddresses);
+        FileFinder fileFinder = new FileFinder(knownAddresses, ownAdress);
         InputStreamReader streamReader = new InputStreamReader(System.in);
         BufferedReader bufferedReader = new BufferedReader(streamReader);
         String line;

@@ -6,9 +6,11 @@ import java.util.List;
 public class FilefinderServer implements Runnable {
 
     final private List<InetAddress> knowAddresses;
+    private InetAddress ownAddress;
 
-    public FilefinderServer(List<InetAddress> knowAddresses) {
+    public FilefinderServer(List<InetAddress> knowAddresses, InetAddress ownAddress) {
         this.knowAddresses = knowAddresses;
+        this.ownAddress = ownAddress;
     }
 
 
@@ -67,12 +69,12 @@ public class FilefinderServer implements Runnable {
 
         int fileSize = 10;
         if(/*check file*/fileSize > 5){
-            publisher.unicast("HAVEFILE;" + addresses.get(0).getHostAddress() + ";" + fileSize, returnAddress, 10002);
+            publisher.unicast("HAVEFILE;" + this.ownAddress + ";" + fileSize, returnAddress, 10002);
         }
 
         InetAddress packetAddress = packet.getAddress();
         InetAddress sendAddress;
-        for(int i = 1; i < addresses.size(); i++){
+        for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
             if(sendAddress != packetAddress){
                 publisher.unicast("s;" + returnAddress + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1), sendAddress, 10001);
