@@ -6,6 +6,8 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class Main {
 
@@ -25,13 +27,10 @@ public class Main {
         Thread t3 = new Thread(filefinderServer);
         t3.start();
 
-        String ip;
-        try(final DatagramSocket socket = new DatagramSocket()){
-            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-            ip = socket.getLocalAddress().getHostAddress();
+        ArrayList<NetworkInterface> list = (ArrayList<NetworkInterface>) NetworkInterface.networkInterfaces().collect(Collectors.toList());
+        for(NetworkInterface n : list){
+            System.out.println(n.getInetAddresses().nextElement().getHostAddress());
         }
-        System.out.println(ip);
-
 
         FileFinder fileFinder = new FileFinder(knownAddresses);
         InputStreamReader streamReader = new InputStreamReader(System.in);
