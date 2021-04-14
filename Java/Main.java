@@ -21,6 +21,7 @@ public class Main {
         t.start();
 
         InetAddress ownAdress = publisher.getOwnAddress();
+        multicastReceiver.setOwnAdrress(ownAdress);
 
         HelloLoop helloLoop = new HelloLoop();
         Thread t2 = new Thread(helloLoop);

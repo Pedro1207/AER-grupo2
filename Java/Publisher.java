@@ -1,9 +1,6 @@
 import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 
 public class Publisher {
     private DatagramSocket socket;
@@ -44,20 +41,22 @@ public class Publisher {
 
         byte[] buf = new byte[256];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
+
         boolean found = false;
-        try{
-            while(!found){
+        InetAddress address = null;
+
+        while(!found){
+            try{
                 socket.receive(packet);
+                String received = new String(packet.getData(), 0, packet.getLength());
+                address = InetAddress.getByName(received);
                 found = true;
+            } catch (SocketException | UnknownHostException e){
+                System.out.println("Trying again.");
             }
-        } catch (SocketException e){
-            System.out.println("Trying again.");
         }
-        String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println(received + " ahahah");
 
-
-        return null;
+        return address;
     }
 }
 

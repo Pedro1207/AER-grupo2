@@ -7,10 +7,12 @@ public class MulticastReceiver extends Thread {
     protected byte[] buf = new byte[1024];
     private final List<InetAddress> knownAddresses;
     private Publisher publisher;
+    private InetAddress ownAdrress;
 
     public MulticastReceiver(List<InetAddress> knownAddresses) {
         this.knownAddresses = knownAddresses;
         publisher = new Publisher();
+        ownAdrress = null;
     }
 
     public void run() {
@@ -37,12 +39,16 @@ public class MulticastReceiver extends Thread {
 
     }
 
+    public void setOwnAdrress(InetAddress ownAdrress){
+        this.ownAdrress = ownAdrress;
+    }
+
     private void interpret(String received, InetAddress address) {
 
         System.out.println(knownAddresses);
 
         try {
-            if (received.equals("HELLO")) {
+            if (this.ownAdrress != null && received.equals("HELLO")) {
                 registerAddress(address);
             } else if(received.equals("MYADDRESS")){
                 giveOwnAddress(address);
@@ -62,7 +68,7 @@ public class MulticastReceiver extends Thread {
 
     private void registerAddress(InetAddress address) throws IOException {
         synchronized (knownAddresses) {
-            if (!this.knownAddresses.contains(address)) {
+            if (!this.knownAddresses.contains(address) && !this.ownAdrress.equals(address)) {
                 knownAddresses.add(address);
             }
         }
