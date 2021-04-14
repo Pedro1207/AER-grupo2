@@ -6,12 +6,18 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws IOException {
+
+        /*
+        Publisher publisher = new Publisher();
+        InetAddress ownAdress = publisher.getOwnAddress();
+*/
+
+        System.out.println(InetAddress.getLocalHost());
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
 
@@ -26,11 +32,6 @@ public class Main {
         FilefinderServer filefinderServer = new FilefinderServer(knownAddresses);
         Thread t3 = new Thread(filefinderServer);
         t3.start();
-
-        ArrayList<NetworkInterface> list = (ArrayList<NetworkInterface>) NetworkInterface.networkInterfaces().collect(Collectors.toList());
-        for(NetworkInterface n : list){
-            System.out.println(n.getInetAddresses().nextElement().getHostAddress());
-        }
 
         FileFinder fileFinder = new FileFinder(knownAddresses);
         InputStreamReader streamReader = new InputStreamReader(System.in);
