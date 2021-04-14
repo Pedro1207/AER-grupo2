@@ -70,6 +70,7 @@ public class FilefinderServer implements Runnable {
         int fileSize = 10;
         if(/*check file*/fileSize > 5){
             publisher.unicast("HAVEFILE;" + this.ownAddress + ";" + fileSize, returnAddress, 10002);
+            System.out.println("oioioi " + returnAddress);
         }
 
         InetAddress packetAddress = packet.getAddress();
@@ -78,6 +79,7 @@ public class FilefinderServer implements Runnable {
             sendAddress = addresses.get(i);
             if(sendAddress != packetAddress){
                 publisher.unicast("s;" + returnAddress + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1), sendAddress, 10001);
+                System.out.println("aiaiaia " + sendAddress);
             }
         }
 
