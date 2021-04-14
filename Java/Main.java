@@ -25,9 +25,12 @@ public class Main {
         Thread t3 = new Thread(filefinderServer);
         t3.start();
 
-
-        DatagramSocket socket = new DatagramSocket(10005);
-        System.out.println(socket.getLocalAddress());
+        String ip;
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress().getHostAddress();
+        }
+        System.out.println(ip);
 
 
         FileFinder fileFinder = new FileFinder(knownAddresses);
