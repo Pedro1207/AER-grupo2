@@ -26,9 +26,8 @@ public class Main {
         t3.start();
 
 
-        byte[] buf = new byte[256];
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 10000);
-        System.out.println(packet.getSocketAddress());
+        DatagramSocket socket = new DatagramSocket(10005);
+        System.out.println(socket.getLocalAddress());
 
 
         FileFinder fileFinder = new FileFinder(knownAddresses);
