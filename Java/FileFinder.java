@@ -20,6 +20,8 @@ public class FileFinder {
 
         ArrayList<InetAddress> addresses = new ArrayList<>();
 
+        System.out.println(knowAddresses.size());
+
         synchronized (this.knowAddresses){
             for (InetAddress knownAddress : this.knowAddresses) {
                 addresses.add(InetAddress.getByName(knownAddress.getHostName()));

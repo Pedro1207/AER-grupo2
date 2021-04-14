@@ -25,7 +25,6 @@ public class MulticastReceiver extends Thread {
                 socket.receive(packet);
                 InetAddress address = packet.getAddress();
                 String received = new String(packet.getData(), 0, packet.getLength());
-                System.out.println(received);
                 this.interpret(received, address);
                 if ("end".equals(received)) {
                     break;
@@ -44,8 +43,6 @@ public class MulticastReceiver extends Thread {
     }
 
     private void interpret(String received, InetAddress address) {
-
-        System.out.println(knownAddresses);
 
         try {
             if (this.ownAdrress != null && received.equals("HELLO")) {
