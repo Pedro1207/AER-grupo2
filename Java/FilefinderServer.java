@@ -62,7 +62,6 @@ public class FilefinderServer implements Runnable {
 
         InetAddress returnAddress = null;
         try {
-            System.out.println(strArray[1] + " ahahahaha");
             returnAddress = InetAddress.getByName(strArray[1]);
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -76,6 +75,7 @@ public class FilefinderServer implements Runnable {
 
         InetAddress packetAddress = packet.getAddress();
         InetAddress sendAddress;
+        System.out.println(addresses.size());
         for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
             System.out.println("aiaiaia " + sendAddress);
