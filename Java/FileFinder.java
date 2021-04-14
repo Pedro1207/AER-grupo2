@@ -31,6 +31,7 @@ public class FileFinder {
 
 
         for(int i = 1; i < addresses.size(); i++){
+            System.out.println(addresses.get(i));
             publisher.unicast("s;" + addresses.get(0).getHostAddress() + ";" + searchTerm + ";5", addresses.get(i), 10001);
         }
 
