@@ -18,17 +18,6 @@ public class FilefinderServer implements Runnable {
     public void run() {
 
         ArrayList<InetAddress> addresses = new ArrayList<>();
-        System.out.println(this.knowAddresses.size());
-
-        synchronized (this.knowAddresses){
-            for (InetAddress knownAddress : this.knowAddresses) {
-                try {
-                    addresses.add(InetAddress.getByName(knownAddress.getHostAddress()));
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
 
         DatagramSocket socket = null;
         try {
@@ -57,6 +46,16 @@ public class FilefinderServer implements Runnable {
         String[] strArray = received.split(";");
         if(!strArray[0].equals("s") || Integer.parseInt(strArray[3]) <= 0){
             return;
+        }
+
+        synchronized (this.knowAddresses){
+            for (InetAddress knownAddress : this.knowAddresses) {
+                try {
+                    addresses.add(InetAddress.getByName(knownAddress.getHostAddress()));
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         Publisher publisher = new Publisher();
