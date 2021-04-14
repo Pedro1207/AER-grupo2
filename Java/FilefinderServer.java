@@ -18,6 +18,7 @@ public class FilefinderServer implements Runnable {
     public void run() {
 
         ArrayList<InetAddress> addresses = new ArrayList<>();
+        System.out.println(this.knowAddresses.size());
 
         synchronized (this.knowAddresses){
             for (InetAddress knownAddress : this.knowAddresses) {
