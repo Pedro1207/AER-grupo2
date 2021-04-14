@@ -55,6 +55,7 @@ public class FilefinderServer implements Runnable {
         System.out.println(received);
         String[] strArray = received.split(";");
         if(!strArray[0].equals("s") || Integer.parseInt(strArray[3]) > 0){
+            System.out.println("fodeu");
             return;
         }
 
