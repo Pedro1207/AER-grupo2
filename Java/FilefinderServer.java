@@ -32,11 +32,10 @@ public class FilefinderServer implements Runnable {
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         try {
             while(true){
-                Thread.sleep(5000);
                 socket.receive(packet);
                 interpretPacket(packet, addresses);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -45,7 +44,6 @@ public class FilefinderServer implements Runnable {
         String received = new String(packet.getData(), 0, packet.getLength());
         System.out.println(received);
         String[] strArray = received.split(";");
-        System.out.println(Integer.parseInt(strArray[3]) <= 0);
         if(!strArray[0].equals("s") || Integer.parseInt(strArray[3]) <= 0){
             return;
         }
@@ -72,7 +70,6 @@ public class FilefinderServer implements Runnable {
 
         int fileSize = 10;
         if(/*check file*/fileSize > 5){
-            System.out.println("Send the thing");
             publisher.unicast("HAVEFILE;" + this.ownAddress.getHostName() + ";" + fileSize, returnAddress, 10002);
         }
 
@@ -80,7 +77,9 @@ public class FilefinderServer implements Runnable {
         InetAddress sendAddress;
         for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
+            System.out.println("possible: " + sendAddress);
             if(!sendAddress.equals(packetAddress)){
+                System.out.println("sending: " + sendAddress + " + " + "s;" + returnAddress.getHostName() + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1));
                 publisher.unicast("s;" + returnAddress.getHostName() + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1), sendAddress, 10001);
 
             }
