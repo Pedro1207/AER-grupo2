@@ -42,6 +42,7 @@ public class FilefinderServer implements Runnable {
 
     private void interpretPacket(DatagramPacket packet) throws IOException {
         String received = new String(packet.getData(), 0, packet.getLength());
+        System.out.println(received);
         String[] strArray = received.split(";");
         if(!strArray[0].equals("s") || Integer.parseInt(strArray[3]) <= 0){
             return;
