@@ -69,6 +69,7 @@ public class FilefinderServer implements Runnable {
 
         int fileSize = 10;
         if(/*check file*/fileSize > 5){
+            System.out.println("Send the thing");
             publisher.unicast("HAVEFILE;" + this.ownAddress.getHostName() + ";" + fileSize, returnAddress, 10002);
         }
 
