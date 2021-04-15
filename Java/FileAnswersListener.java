@@ -30,18 +30,21 @@ public class FileAnswersListener implements Runnable {
 
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         FileInfo fi;
-        try {
-            while(true){
+        boolean done = false;
+        while (!done) {
+            try {
                 System.out.println("Waiting for answer!");
                 socket.receive(packet);
                 fi = interpretPacket(packet, System.currentTimeMillis());
-                if(fi != null){
+                if (fi != null) {
                     fileInfos.add(fi);
                 }
+            } catch (SocketTimeoutException e) {
+                done = true;
+                System.out.println("No more answers received");
+            } catch (IOException e){
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("No more answers received");
         }
     }
 
@@ -50,13 +53,13 @@ public class FileAnswersListener implements Runnable {
         String received = new String(packet.getData(), 0, packet.getLength());
         System.out.println(received);
 
-        if(received.startsWith("HAVEFILE")) {
+        if (received.startsWith("HAVEFILE")) {
             String[] strArray;
             FileInfo fileInfo;
             strArray = received.split(";");
             fileInfo = new FileInfo(this.searchTerm, InetAddress.getByName(strArray[1]), Integer.parseInt(strArray[2]), time - this.currentTime);
             return fileInfo;
-        } else{
+        } else {
             return null;
         }
 
