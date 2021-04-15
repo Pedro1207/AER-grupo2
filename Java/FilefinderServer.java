@@ -17,7 +17,7 @@ public class FilefinderServer implements Runnable {
     @Override
     public void run() {
 
-        ArrayList<InetAddress> addresses = new ArrayList<>();
+
 
         DatagramSocket socket = null;
         try {
@@ -32,16 +32,15 @@ public class FilefinderServer implements Runnable {
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         try {
             while(true){
-                Thread.sleep(5000);
                 socket.receive(packet);
-                interpretPacket(packet, addresses);
+                interpretPacket(packet);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void interpretPacket(DatagramPacket packet, ArrayList<InetAddress> addresses) throws IOException {
+    private void interpretPacket(DatagramPacket packet) throws IOException {
         String received = new String(packet.getData(), 0, packet.getLength());
         System.out.println("\n\n\n\n\n\n\nreceived:" + received);
         String[] strArray = received.split(";");
@@ -49,6 +48,7 @@ public class FilefinderServer implements Runnable {
             return;
         }
 
+        ArrayList<InetAddress> addresses = new ArrayList<>();
 
         synchronized (this.knowAddresses){
             for (InetAddress knownAddress : this.knowAddresses) {
