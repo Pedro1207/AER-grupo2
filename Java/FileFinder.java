@@ -20,8 +20,6 @@ public class FileFinder {
 
         ArrayList<InetAddress> addresses = new ArrayList<>();
 
-        System.out.println(knowAddresses.size());
-
         synchronized (this.knowAddresses){
             for (InetAddress knownAddress : this.knowAddresses) {
                 addresses.add(InetAddress.getByName(knownAddress.getHostName()));
@@ -35,7 +33,6 @@ public class FileFinder {
 
 
         for(int i = 0; i < addresses.size(); i++){
-            System.out.println(addresses.get(i));
             publisher.unicast("s;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10001);
         }
 
