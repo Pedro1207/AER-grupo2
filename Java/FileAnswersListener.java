@@ -64,9 +64,9 @@ public class FileAnswersListener implements Runnable {
             fileInfo = new FileInfo(this.searchTerm, InetAddress.getByName(strArray[1]), Integer.parseInt(strArray[2]), time - this.currentTime);
             if(checkForRepeat(strArray[1]))
             return fileInfo;
-        } else {
-            return null;
         }
+
+        return null;
 
     }
 
