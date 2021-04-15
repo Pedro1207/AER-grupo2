@@ -58,12 +58,28 @@ public class FileAnswersListener implements Runnable {
             String[] strArray;
             FileInfo fileInfo;
             strArray = received.split(";");
+            if(checkForRepeat(strArray[1])){
+                return null;
+            }
             fileInfo = new FileInfo(this.searchTerm, InetAddress.getByName(strArray[1]), Integer.parseInt(strArray[2]), time - this.currentTime);
+            if(checkForRepeat(strArray[1]))
             return fileInfo;
         } else {
             return null;
         }
 
+    }
+
+    private boolean checkForRepeat(String address){
+        for(FileInfo f : this.fileInfos){
+            try {
+                if(f.getLocation().equals(InetAddress.getByName(address))) return true;
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
     }
 
 }
