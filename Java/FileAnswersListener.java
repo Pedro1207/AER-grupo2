@@ -46,6 +46,7 @@ public class FileAnswersListener implements Runnable {
                 e.printStackTrace();
             }
         }
+        socket.close();
     }
 
 
