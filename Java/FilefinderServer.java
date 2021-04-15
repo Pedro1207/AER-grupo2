@@ -32,18 +32,18 @@ public class FilefinderServer implements Runnable {
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         try {
             while(true){
+                Thread.sleep(5000);
                 socket.receive(packet);
                 interpretPacket(packet, addresses);
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private void interpretPacket(DatagramPacket packet, ArrayList<InetAddress> addresses) throws IOException {
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println("\n\n\n\n\n\n\n");
-        System.out.println("received:" + received);
+        System.out.println("\n\n\n\n\n\n\nreceived:" + received);
         String[] strArray = received.split(";");
         if(!strArray[0].equals("s") || Integer.parseInt(strArray[3]) <= 0){
             return;
