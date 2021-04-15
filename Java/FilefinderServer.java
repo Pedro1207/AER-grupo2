@@ -42,7 +42,6 @@ public class FilefinderServer implements Runnable {
 
     private void interpretPacket(DatagramPacket packet) throws IOException {
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println("\n\n\n\n\n\n\nreceived:" + received);
         String[] strArray = received.split(";");
         if(!strArray[0].equals("s") || Integer.parseInt(strArray[3]) <= 0){
             return;
@@ -78,9 +77,7 @@ public class FilefinderServer implements Runnable {
         InetAddress sendAddress;
         for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
-            System.out.println("possible " + i + ":" + sendAddress);
             if(!sendAddress.equals(packetAddress)){
-                System.out.println("sending: " + sendAddress + " + " + "s;" + returnAddress.getHostName() + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1));
                 publisher.unicast("s;" + returnAddress.getHostName() + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1), sendAddress, 10001);
 
             }
