@@ -32,10 +32,11 @@ public class FilefinderServer implements Runnable {
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         try {
             while(true){
+                Thread.sleep(5000);
                 socket.receive(packet);
                 interpretPacket(packet, addresses);
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -44,9 +45,11 @@ public class FilefinderServer implements Runnable {
         String received = new String(packet.getData(), 0, packet.getLength());
         System.out.println(received);
         String[] strArray = received.split(";");
+        System.out.println(Integer.parseInt(strArray[3]) <= 0);
         if(!strArray[0].equals("s") || Integer.parseInt(strArray[3]) <= 0){
             return;
         }
+
 
         synchronized (this.knowAddresses){
             for (InetAddress knownAddress : this.knowAddresses) {
