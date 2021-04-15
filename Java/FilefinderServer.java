@@ -78,7 +78,7 @@ public class FilefinderServer implements Runnable {
         InetAddress sendAddress;
         for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
-            System.out.println("possible: " + sendAddress);
+            System.out.println("possible " + i + ":" + sendAddress);
             if(!sendAddress.equals(packetAddress)){
                 System.out.println("sending: " + sendAddress + " + " + "s;" + returnAddress.getHostName() + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1));
                 publisher.unicast("s;" + returnAddress.getHostName() + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1), sendAddress, 10001);
