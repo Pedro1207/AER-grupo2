@@ -46,7 +46,7 @@ public class FileFinder {
         }
 
         if(fileInfos.size() == 0){
-            return fileInfos;
+            return null;
         }
 
         ArrayList<String> uniqueFiles = new ArrayList<>();
