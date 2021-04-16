@@ -49,7 +49,7 @@ public class Main {
         String line;
         while(true){
             line = bufferedReader.readLine();
-            System.out.println(fileFinder.findFile(line));
+            FileInfo fileInfos = fileFinder.findFile(line);
         }
 
 

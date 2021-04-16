@@ -1,6 +1,6 @@
 import java.net.InetAddress;
 
-public class FileInfo {
+public class FileInfo implements Comparable<FileInfo>{
 
     private String name;
     private InetAddress location;
@@ -45,5 +45,11 @@ public class FileInfo {
 
     public void setRtt(long rtt) {
         this.rtt = rtt;
+    }
+
+
+    @Override
+    public int compareTo(FileInfo fileInfo) {
+        return Long.compare(this.getRtt(), fileInfo.getRtt());
     }
 }

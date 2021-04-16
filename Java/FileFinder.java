@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +19,7 @@ public class FileFinder {
         this.ownAddress = ownAddress;
     }
 
-    public ArrayList<FileInfo> findFile(String searchTerm) throws IOException {
+    public FileInfo findFile(String searchTerm) throws IOException {
 
         ArrayList<InetAddress> addresses = new ArrayList<>();
 
@@ -42,7 +45,52 @@ public class FileFinder {
             e.printStackTrace();
         }
 
-        return fileInfos;
+        if(fileInfos.size() == 0){
+            return fileInfos;
+        }
+
+        ArrayList<String> uniqueFiles = new ArrayList<>();
+        ArrayList<Long> uniqueFilesSize = new ArrayList<Long>();
+        for(FileInfo f : fileInfos){
+            if(!uniqueFiles.contains(f.getName())){
+                uniqueFiles.add(f.getName());
+                uniqueFilesSize.add(f.getSize());
+            }
+        }
+
+        System.out.println("Ficheiros disponíveis:");
+        for(int i = 0; i < uniqueFiles.size(); i++){
+            System.out.println(i + ": " + uniqueFiles.get(i) + " - " + uniqueFilesSize.get(i) + " bytes");
+        }
+        System.out.println(uniqueFiles.size() + ": Cancelar");
+        InputStreamReader streamReader = new InputStreamReader(System.in);
+        BufferedReader bufferedReader = new BufferedReader(streamReader);
+        int file = -1;
+        String line;
+        while(file < 0 || file > uniqueFiles.size()){
+            line = bufferedReader.readLine();
+            try{
+                file = Integer.parseInt(line);
+            } catch (NumberFormatException ignored){
+
+            }
+
+            if(file < 0 || file > uniqueFiles.size()){
+                System.out.println("Numero invalido");
+            }
+        }
+
+        line = uniqueFiles.get(file);
+
+        ArrayList<FileInfo> choseFiles = new ArrayList<>();
+        for(FileInfo f : fileInfos){
+            if(f.getName().equals(line)){
+                choseFiles.add(f);
+            }
+        }
+
+        Collections.sort(choseFiles);
+        return choseFiles.get(0);
 
     }
 
