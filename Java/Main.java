@@ -52,7 +52,7 @@ public class Main {
         String line;
         while(true){
             line = bufferedReader.readLine();
-            System.out.println("ola + " + fileFinder.findFile("ola"));
+            System.out.println(fileFinder.findFile(line));
         }
 
 

@@ -51,7 +51,7 @@ public class Publisher {
                 String received = new String(packet.getData(), 0, packet.getLength());
                 address = InetAddress.getByName(received);
                 found = true;
-            } catch (SocketException | UnknownHostException e){
+            } catch (SocketTimeoutException | UnknownHostException e){
                 System.out.println("Trying again.");
             }
         }
