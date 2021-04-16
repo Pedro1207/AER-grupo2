@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MulticastReceiver extends Thread {
@@ -8,11 +9,13 @@ public class MulticastReceiver extends Thread {
     private final List<InetAddress> knownAddresses;
     private Publisher publisher;
     private InetAddress ownAdrress;
+    private FilesChecker filesChecker;
 
-    public MulticastReceiver(List<InetAddress> knownAddresses) {
+    public MulticastReceiver(List<InetAddress> knownAddresses, String dataFolder) {
         this.knownAddresses = knownAddresses;
         publisher = new Publisher();
         ownAdrress = null;
+        this.filesChecker = new FilesChecker(dataFolder);
     }
 
     public void run() {
@@ -49,6 +52,8 @@ public class MulticastReceiver extends Thread {
                 registerAddress(address);
             } else if(received.equals("MYADDRESS")){
                 giveOwnAddress(address);
+            } else if(received.startsWith("s")){
+                interpretPacket(received, address);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,4 +75,54 @@ public class MulticastReceiver extends Thread {
             }
         }
     }
+
+
+    private void interpretPacket(String received, InetAddress packetAddress) throws IOException {
+        System.out.println(received);
+        String[] strArray = received.split(";");
+        if(Integer.parseInt(strArray[3]) <= 0){
+            return;
+        }
+
+        ArrayList<InetAddress> addresses = new ArrayList<>();
+
+        synchronized (this.knownAddresses){
+            for (InetAddress knownAddress : this.knownAddresses) {
+                try {
+                    addresses.add(InetAddress.getByName(knownAddress.getHostAddress()));
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Publisher publisher = new Publisher();
+
+        InetAddress returnAddress = null;
+        try {
+            returnAddress = InetAddress.getByName(strArray[1]);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        String[] fileInfo = filesChecker.checkForFile(strArray[2]);
+        if(fileInfo == null){
+            return;
+        }
+        else{
+            publisher.unicast("HAVEFILE;" + this.ownAdrress.getHostName() + ";" + fileInfo[0] + ";" + fileInfo[1], returnAddress, 10002);
+        }
+
+        InetAddress sendAddress;
+        for(int i = 0; i < addresses.size(); i++){
+            sendAddress = addresses.get(i);
+            if(!sendAddress.equals(packetAddress) && !sendAddress.equals(returnAddress)){
+                publisher.unicast("s;" + strArray[1] + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1), sendAddress, 10000);
+
+            }
+        }
+
+    }
+
+
 }

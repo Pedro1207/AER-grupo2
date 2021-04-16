@@ -14,7 +14,6 @@ public class FileHandler {
 	 * @param path
 	 */
 	public FileHandler(String path){
-		
 		this.path = path;
 	}
 	

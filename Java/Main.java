@@ -31,7 +31,7 @@ public class Main {
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
 
-        MulticastReceiver multicastReceiver = new MulticastReceiver(knownAddresses);
+        MulticastReceiver multicastReceiver = new MulticastReceiver(knownAddresses, dataFolder);
         Thread t = new Thread(multicastReceiver);
         t.start();
 
@@ -42,9 +42,6 @@ public class Main {
         Thread t2 = new Thread(helloLoop);
         t2.start();
 
-        FilefinderServer filefinderServer = new FilefinderServer(knownAddresses, ownAdress, dataFolder);
-        Thread t3 = new Thread(filefinderServer);
-        t3.start();
 
         FileFinder fileFinder = new FileFinder(knownAddresses, ownAdress);
         InputStreamReader streamReader = new InputStreamReader(System.in);

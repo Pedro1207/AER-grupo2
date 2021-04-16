@@ -33,7 +33,7 @@ public class FileFinder {
 
 
         for(int i = 0; i < addresses.size(); i++){
-            publisher.unicast("s;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10001);
+            publisher.unicast("s;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10000);
         }
 
         try {
