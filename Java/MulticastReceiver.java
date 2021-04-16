@@ -1,21 +1,24 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MulticastReceiver extends Thread {
     protected MulticastSocket socket = null;
     protected byte[] buf = new byte[1024];
     private final List<InetAddress> knownAddresses;
-    private Publisher publisher;
+    private final Publisher publisher;
     private InetAddress ownAdrress;
-    private FilesChecker filesChecker;
+    private final FilesChecker filesChecker;
+    private String dataFolder;
 
     public MulticastReceiver(List<InetAddress> knownAddresses, String dataFolder) {
         this.knownAddresses = knownAddresses;
         publisher = new Publisher();
         ownAdrress = null;
         this.filesChecker = new FilesChecker(dataFolder);
+        this.dataFolder = dataFolder;
     }
 
     public void run() {
@@ -54,10 +57,27 @@ public class MulticastReceiver extends Thread {
                 giveOwnAddress(address);
             } else if(received.startsWith("s")){
                 interpretPacket(received, address);
+            } else if(received.startsWith("GETCHUNK")){
+                sendChunk(received, address);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendChunk(String received, InetAddress address) {
+        String[] strArray = received.split(";");
+
+        FileHandler fileHandler = new FileHandler(dataFolder + strArray[1]);
+
+        try {
+            byte[] bytes = fileHandler.readBytes(Integer.parseInt(strArray[2]), Integer.parseInt(strArray[3]));
+            publisher.unicast("CHUNK;" + strArray[1] + ";" + strArray[2] + ";" + strArray[3] + ";" + Arrays.toString(bytes), address, 10001);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void giveOwnAddress(InetAddress address) {

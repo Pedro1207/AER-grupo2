@@ -19,7 +19,7 @@ public class FileFinder {
         this.ownAddress = ownAddress;
     }
 
-    public FileInfo findFile(String searchTerm) throws IOException {
+    public ArrayList<FileInfo> findFile(String searchTerm) throws IOException {
 
         ArrayList<InetAddress> addresses = new ArrayList<>();
 
@@ -80,6 +80,10 @@ public class FileFinder {
             }
         }
 
+        if(file == uniqueFiles.size()){
+            return null;
+        }
+
         line = uniqueFiles.get(file);
 
         ArrayList<FileInfo> choseFiles = new ArrayList<>();
@@ -90,7 +94,7 @@ public class FileFinder {
         }
 
         Collections.sort(choseFiles);
-        return choseFiles.get(0);
+        return choseFiles;
 
     }
 

@@ -49,7 +49,15 @@ public class Main {
         String line;
         while(true){
             line = bufferedReader.readLine();
-            FileInfo fileInfos = fileFinder.findFile(line);
+            ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
+            if(fileInfos == null){
+                continue;
+            } else{
+                FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
+                FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
+                fd.download();
+            }
+
         }
 
 
