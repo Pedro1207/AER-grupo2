@@ -6,18 +6,18 @@ import java.util.List;
 public class FilefinderServer implements Runnable {
 
     final private List<InetAddress> knowAddresses;
-    private InetAddress ownAddress;
+    private final InetAddress ownAddress;
+    private FilesChecker filesChecker;
 
-    public FilefinderServer(List<InetAddress> knowAddresses, InetAddress ownAddress) {
+    public FilefinderServer(List<InetAddress> knowAddresses, InetAddress ownAddress, String dataFolder) {
         this.knowAddresses = knowAddresses;
         this.ownAddress = ownAddress;
+        this.filesChecker = new FilesChecker(dataFolder);
     }
 
 
     @Override
     public void run() {
-
-
 
         DatagramSocket socket = null;
         try {
@@ -69,9 +69,12 @@ public class FilefinderServer implements Runnable {
             e.printStackTrace();
         }
 
-        int fileSize = 10;
-        if(/*check file*/fileSize > 5){
-            publisher.unicast("HAVEFILE;" + this.ownAddress.getHostName() + ";" + fileSize, returnAddress, 10002);
+        String[] fileInfo = filesChecker.checkForFile(strArray[2]);
+        if(fileInfo == null){
+            return;
+        }
+        else{
+            publisher.unicast("HAVEFILE;" + this.ownAddress.getHostName() + ";" + fileInfo[0] + ";" + fileInfo[1], returnAddress, 10002);
         }
 
         InetAddress packetAddress = packet.getAddress();

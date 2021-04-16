@@ -3,6 +3,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +13,19 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
+        if(args.length < 1){
+            System.out.println("Missing arguments. Usage: java Main <dataFolder>");
+            System.exit(1);
+        } else if(!Files.exists(Path.of(args[0]))){
+            System.out.println("Data Folder Does Not Exist.");
+            System.exit(2);
+        }
+
+        String dataFolder = args[0];
+        if(!dataFolder.endsWith("/")){
+            dataFolder += "/";
+        }
 
         Publisher publisher = new Publisher();
 
@@ -22,13 +37,12 @@ public class Main {
 
         InetAddress ownAdress = publisher.getOwnAddress();
         multicastReceiver.setOwnAdrress(ownAdress);
-        System.out.println(ownAdress);
 
         HelloLoop helloLoop = new HelloLoop();
         Thread t2 = new Thread(helloLoop);
         t2.start();
 
-        FilefinderServer filefinderServer = new FilefinderServer(knownAddresses, ownAdress);
+        FilefinderServer filefinderServer = new FilefinderServer(knownAddresses, ownAdress, dataFolder);
         Thread t3 = new Thread(filefinderServer);
         t3.start();
 

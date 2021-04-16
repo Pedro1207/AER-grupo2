@@ -4,11 +4,11 @@ public class FileInfo {
 
     private String name;
     private InetAddress location;
-    private int size;
+    private long size;
     private long rtt;
 
 
-    public FileInfo(String name, InetAddress location, int size, long rtt) {
+    public FileInfo(String name, InetAddress location, long size, long rtt) {
         this.name = name;
         this.location = location;
         this.size = size;
@@ -31,7 +31,7 @@ public class FileInfo {
         this.location = location;
     }
 
-    public int getSize() {
+    public long getSize() {
         return size;
     }
 
