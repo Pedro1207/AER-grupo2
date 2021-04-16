@@ -72,7 +72,7 @@ public class FileDownloader {
             return;
         }
 
-        String[] strArray = received.split(";");
+        String[] strArray = received.split(";", 5);
         try {
             fileHandler.writeBytes(strArray[4].getBytes(StandardCharsets.UTF_8), Integer.parseInt(strArray[2]), Integer.parseInt(strArray[3]) - 1);
         } catch (IOException e) {
