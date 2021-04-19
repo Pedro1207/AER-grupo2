@@ -28,7 +28,9 @@ public class FileDownloader {
                 return;
             }
 
-            byte[] buf = new byte[1500];
+            int messageSize = 50000;
+
+            byte[] buf = new byte[messageSize + 1000];
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
             FileInfo active = this.fileInfos.get(0);
@@ -36,17 +38,18 @@ public class FileDownloader {
             long size = active.getSize();
             long offset = 0;
 
+
             System.out.println("Size:" + size);
 
-            while (size - offset > 1000) {
+            while (size - offset > messageSize) {
                 try {
-                    publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + 1000, active.getLocation(), 10000);
+                    publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + messageSize, active.getLocation(), 10000);
                     socket.receive(packet);
                     writePacketToFile(packet);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                offset += 1000;
+                offset += messageSize;
             }
 
             try {
