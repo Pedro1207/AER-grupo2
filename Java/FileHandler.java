@@ -45,7 +45,9 @@ public class FileHandler {
 	 */
 	public void writeBytes(byte[] content, int from, int to)
 			throws IOException{
-		
+
+		System.out.println(from + " +++ " + to);
+
 		RandomAccessFile raf = new RandomAccessFile(path,"rw");
 		int diff = to-from;
 		raf.seek(from);
