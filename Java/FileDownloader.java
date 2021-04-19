@@ -39,7 +39,6 @@ public class FileDownloader {
             System.out.println("Size:" + size);
 
             while (size - offset > 1000) {
-                System.out.println("Size - offset: " + (size - offset));
                 try {
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + 1000, active.getLocation(), 10000);
                     socket.receive(packet);
@@ -49,6 +48,7 @@ public class FileDownloader {
                 }
                 offset += 1000;
                 System.out.println("Size - offset: " + (size - offset));
+                System.out.println(size - offset > 1000);
             }
 
             try {
