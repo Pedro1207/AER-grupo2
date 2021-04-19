@@ -72,7 +72,7 @@ public class MulticastReceiver extends Thread {
         FileHandler fileHandler = new FileHandler(dataFolder + strArray[1]);
 
         try {
-            byte[] bytes = fileHandler.readBytes(Integer.parseInt(strArray[2]), Integer.parseInt(strArray[3]));
+            byte[] bytes = fileHandler.readBytes(Integer.parseInt(strArray[2]), Integer.parseInt(strArray[2]) + Integer.parseInt(strArray[3]));
             publisher.unicast("CHUNK;" + strArray[1] + ";" + strArray[2] + ";" + strArray[3] + ";" + new String(bytes, StandardCharsets.UTF_8), address, 10001);
         } catch (IOException e) {
             e.printStackTrace();
