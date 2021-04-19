@@ -61,6 +61,8 @@ public class FileDownloader {
 
 
         } catch (Exception e){
+            System.out.println("Error.");
+            e.printStackTrace();
             if(socket != null){
                 socket.close();
             }

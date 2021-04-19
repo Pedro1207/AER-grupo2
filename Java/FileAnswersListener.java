@@ -20,7 +20,7 @@ public class FileAnswersListener implements Runnable {
         DatagramSocket socket = null;
         try {
             socket = new DatagramSocket(10002);
-            socket.setSoTimeout(5000);
+            socket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
             return;
