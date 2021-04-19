@@ -36,6 +36,8 @@ public class FileDownloader {
             long size = active.getSize();
             long offset = 0;
 
+            System.out.println("Size:" + size);
+
             while (size - offset > 1000) {
                 try {
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + 1000, active.getLocation(), 10000);
@@ -65,6 +67,8 @@ public class FileDownloader {
                 socket.close();
             }
         }
+
+        System.out.println("File download finished.");
 
 
     }
