@@ -57,7 +57,7 @@ public class MulticastReceiver extends Thread {
             } else if(received.equals("MYADDRESS")){
                 giveOwnAddress(address);
             } else if(received.startsWith("s")){
-                interpretPacket(received, address);
+                searchReply(received, address);
             } else if(received.startsWith("GETCHUNK")){
                 sendChunk(received, address);
             }
@@ -99,7 +99,7 @@ public class MulticastReceiver extends Thread {
     }
 
 
-    private void interpretPacket(String received, InetAddress packetAddress) throws IOException {
+    private void searchReply(String received, InetAddress packetAddress) throws IOException {
         System.out.println(received);
         String[] strArray = received.split(";");
         if(Integer.parseInt(strArray[3]) <= 0){
@@ -127,14 +127,6 @@ public class MulticastReceiver extends Thread {
             e.printStackTrace();
         }
 
-        String[] fileInfo = filesChecker.checkForFile(strArray[2]);
-        if(fileInfo == null){
-            return;
-        }
-        else{
-            publisher.unicast("HAVEFILE;" + this.ownAdrress.getHostName() + ";" + fileInfo[0] + ";" + fileInfo[1], returnAddress, 10002);
-        }
-
         InetAddress sendAddress;
         for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
@@ -143,6 +135,16 @@ public class MulticastReceiver extends Thread {
 
             }
         }
+
+        String[] fileInfo = filesChecker.checkForFile(strArray[2]);
+        if(fileInfo == null){
+            return;
+        }
+        else{
+            publisher.unicast("HAVEFILE;" + this.ownAdrress.getHostName() + ";" + fileInfo[0] + ";" + fileInfo[1], returnAddress, 10002);
+        }
+
+
 
     }
 
