@@ -47,8 +47,6 @@ public class FileDownloader {
                     e.printStackTrace();
                 }
                 offset += 1000;
-                System.out.println("Size - offset: " + (size - offset));
-                System.out.println(size - offset > 1000);
             }
 
             try {
@@ -79,14 +77,13 @@ public class FileDownloader {
 
     private void writePacketToFile(DatagramPacket packet) {
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println(received);
         if (!received.startsWith("CHUNK")) {
             return;
         }
 
         String[] strArray = received.split(";", 5);
         try {
-            fileHandler.writeBytes(strArray[4].getBytes(StandardCharsets.UTF_8), Integer.parseInt(strArray[2]), Integer.parseInt(strArray[2]) + Integer.parseInt(strArray[3]) - 1);
+            fileHandler.writeBytes(strArray[4].getBytes(StandardCharsets.UTF_8), Integer.parseInt(strArray[2]), Integer.parseInt(strArray[2]) + Integer.parseInt(strArray[3]));
         } catch (IOException e) {
             e.printStackTrace();
         }
