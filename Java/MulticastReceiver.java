@@ -67,6 +67,7 @@ public class MulticastReceiver extends Thread {
     }
 
     private void sendChunk(String received, InetAddress address) {
+        System.out.println("Sending chunk");
         String[] strArray = received.split(";");
 
         FileHandler fileHandler = new FileHandler(dataFolder + strArray[1]);
