@@ -48,6 +48,7 @@ public class Main {
         BufferedReader bufferedReader = new BufferedReader(streamReader);
         String line;
         while(true){
+            System.out.print("Introduce search term: ");
             line = bufferedReader.readLine();
             ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
             if(fileInfos == null){
