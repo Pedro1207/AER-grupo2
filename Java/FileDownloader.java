@@ -60,6 +60,10 @@ public class FileDownloader {
             if(socket != null){
                 socket.close();
             }
+        } finally {
+            if (socket != null) {
+                socket.close();
+            }
         }
 
 
