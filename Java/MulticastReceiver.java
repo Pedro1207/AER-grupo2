@@ -108,6 +108,8 @@ public class MulticastReceiver extends Thread {
             if (!this.knownAddresses.contains(address) && !this.ownAdrress.equals(address)) {
                 knownAddresses.add(address);
                 this.dropControlList.add(0);
+            } else{
+                this.dropControlList.set(this.knownAddresses.indexOf(address), 0);
             }
         }
     }

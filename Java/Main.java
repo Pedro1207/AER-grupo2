@@ -16,7 +16,7 @@ public class Main {
      * Variável que guarda o número a partir do qual os
      * hosts serão descartados, caso não sejam recebidos hello's
      */
-    private static final int MAX_TIMES_WITHOUT_HELLO = 4;
+    private static final int MAX_TIMES_WITHOUT_HELLO = 3;
 
     public static void main(String[] args) throws IOException {
 
