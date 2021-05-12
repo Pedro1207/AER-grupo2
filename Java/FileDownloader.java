@@ -62,12 +62,14 @@ public class FileDownloader {
 
             }
 
+            boolean finished = false;
 
-            while(activeHost < this.fileInfos.size()){
+            while(activeHost < this.fileInfos.size() || !finished){
                 try {
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + (size - offset), active.getLocation(), 10000);
                     socket.receive(packet);
                     writePacketToFile(packet);
+                    finished = true;
                 } catch (IOException e) {
                     System.out.println("Failed to get chunck. Retying");
                     failCount++;
