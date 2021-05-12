@@ -22,7 +22,7 @@ public class FileDownloader {
             Publisher publisher = new Publisher();
             try {
                 socket = new DatagramSocket(10001);
-                socket.setSoTimeout(1000);
+                socket.setSoTimeout(5000);
             } catch (SocketException e) {
                 e.printStackTrace();
                 return;
@@ -33,52 +33,32 @@ public class FileDownloader {
             byte[] buf = new byte[messageSize + 1000];
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
-            int activeHost = 0;
-            FileInfo active = this.fileInfos.get(activeHost);
+            FileInfo active = this.fileInfos.get(0);
 
             long size = active.getSize();
             long offset = 0;
-            int failCount = 0;
-
 
 
             System.out.println("Size:" + size);
 
-            while (size - offset > messageSize && activeHost < this.fileInfos.size()) {
+            while (size - offset > messageSize) {
                 try {
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + messageSize, active.getLocation(), 10000);
                     socket.receive(packet);
                     writePacketToFile(packet);
-                    offset += messageSize;
                 } catch (IOException e) {
-                    System.out.println("Failed to get chunck. Retying");
-                    failCount++;
-                    if(failCount >= 3){
-                        activeHost++;
-                        if(activeHost < this.fileInfos.size()) active = this.fileInfos.get(activeHost);
-                        failCount = 0;
-                    }
+                    e.printStackTrace();
                 }
-
+                offset += messageSize;
             }
 
-
-            while(activeHost < this.fileInfos.size()){
-                try {
-                    publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + (size - offset), active.getLocation(), 10000);
-                    socket.receive(packet);
-                    writePacketToFile(packet);
-                } catch (IOException e) {
-                    System.out.println("Failed to get chunck. Retying");
-                    failCount++;
-                    if(failCount >= 3){
-                        activeHost++;
-                        if(activeHost < this.fileInfos.size()) active = this.fileInfos.get(activeHost);
-                        failCount = 0;
-                    }
-                }
+            try {
+                publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + (size - offset), active.getLocation(), 10000);
+                socket.receive(packet);
+                writePacketToFile(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
 
 
         } catch (Exception e){
