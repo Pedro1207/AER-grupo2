@@ -50,6 +50,7 @@ public class FileDownloader {
                     socket.receive(packet);
                     writePacketToFile(packet);
                     offset += messageSize;
+                    failCount = 0;
                 } catch (IOException e) {
                     System.out.println("Failed to get chunck. Retying");
                     failCount++;

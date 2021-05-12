@@ -48,7 +48,7 @@ public class HelloLoop extends Thread {
                         --i;
                     }
                 }
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
