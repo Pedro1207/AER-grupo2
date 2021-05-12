@@ -64,7 +64,7 @@ public class FileDownloader {
 
             boolean finished = false;
 
-            while(activeHost < this.fileInfos.size() || !finished){
+            while(activeHost < this.fileInfos.size() && !finished){
                 try {
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + (size - offset), active.getLocation(), 10000);
                     socket.receive(packet);
