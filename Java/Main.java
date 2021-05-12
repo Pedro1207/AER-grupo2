@@ -11,12 +11,6 @@ import java.util.List;
 
 
 public class Main {
-    
-    /**
-     * Variável que guarda o número a partir do qual os
-     * hosts serão descartados, caso não sejam recebidos hello's
-     */
-    private static final int MAX_TIMES_WITHOUT_HELLO = 4;
 
     public static void main(String[] args) throws IOException {
 
@@ -36,16 +30,15 @@ public class Main {
         Publisher publisher = new Publisher();
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
-        List<Integer> dropControlList = Collections.synchronizedList(new ArrayList<>());
 
-        MulticastReceiver multicastReceiver = new MulticastReceiver(knownAddresses, dropControlList, dataFolder);
+        MulticastReceiver multicastReceiver = new MulticastReceiver(knownAddresses, dataFolder);
         Thread t = new Thread(multicastReceiver);
         t.start();
 
         InetAddress ownAdress = publisher.getOwnAddress();
         multicastReceiver.setOwnAdrress(ownAdress);
 
-        HelloLoop helloLoop = new HelloLoop(MAX_TIMES_WITHOUT_HELLO, knownAddresses, dropControlList);
+        HelloLoop helloLoop = new HelloLoop();
         Thread t2 = new Thread(helloLoop);
         t2.start();
 

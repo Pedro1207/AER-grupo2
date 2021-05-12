@@ -2,33 +2,19 @@ import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MulticastReceiver extends Thread {
     protected MulticastSocket socket = null;
     protected byte[] buf = new byte[1024];
-    
-    /**
-     * Estrutura que guarda os hosts que cada peer
-     * mantém conectividade de momento
-     */
     private final List<InetAddress> knownAddresses;
-    
-    /**
-     * Estrutura que vai servir para controlar o drop
-     * de um host que não tenha enviado HELLO's num
-     * determinado número de segundos
-     */
-    private final List<Integer> dropControlList;
     private final Publisher publisher;
     private InetAddress ownAdrress;
     private final FilesChecker filesChecker;
     private String dataFolder;
 
-    public MulticastReceiver(List<InetAddress> knownAddresses, List<Integer> dropControlList, String dataFolder) {
+    public MulticastReceiver(List<InetAddress> knownAddresses, String dataFolder) {
         this.knownAddresses = knownAddresses;
-        this.dropControlList = dropControlList;
         publisher = new Publisher();
         ownAdrress = null;
         this.filesChecker = new FilesChecker(dataFolder);
@@ -107,7 +93,6 @@ public class MulticastReceiver extends Thread {
         synchronized (knownAddresses) {
             if (!this.knownAddresses.contains(address) && !this.ownAdrress.equals(address)) {
                 knownAddresses.add(address);
-                this.dropControlList.add(0);
             }
         }
     }
