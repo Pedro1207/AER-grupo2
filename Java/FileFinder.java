@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,6 +94,41 @@ public class FileFinder {
 
         Collections.sort(choseFiles);
         return choseFiles;
+
+    }
+
+    public ArrayList<FileInfo> findExactFile(String searchTerm) throws IOException {
+
+        ArrayList<InetAddress> addresses = new ArrayList<>();
+
+        synchronized (this.knowAddresses){
+            for (InetAddress knownAddress : this.knowAddresses) {
+                addresses.add(InetAddress.getByName(knownAddress.getHostName()));
+            }
+        }
+
+        ArrayList<FileInfo> fileInfos = new ArrayList<>();
+        FileAnswersListener fal = new FileAnswersListener(fileInfos, System.currentTimeMillis(), searchTerm);
+        Thread t = new Thread(fal);
+        t.start();
+
+
+        for(int i = 0; i < addresses.size(); i++){
+            publisher.unicast("es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10000);
+        }
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(fileInfos.size() == 0){
+            return null;
+        }
+
+        Collections.sort(fileInfos);
+        return fileInfos;
 
     }
 

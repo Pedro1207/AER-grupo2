@@ -12,15 +12,20 @@ public class FilesChecker {
         this.dataFolder = dataFolder;
     }
 
-    public String[] checkForFile(String searchTerm){
+    public String[] checkForFile(String searchTerm, int mode){ //mode 0 partial search, mode 1 exact search
         ArrayList<String> files = this.getAllFiles();
-
         String file = "";
-        for(String s : files){
-            if(s.contains(searchTerm)){
-                file = s;
-                break;
+        if(mode == 0){
+
+            for(String s : files){
+                if(s.contains(searchTerm)){
+                    file = s;
+                    break;
+                }
             }
+        }
+        else if (mode == 1){
+
         }
 
         if(file.length() > 0){

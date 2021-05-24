@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MulticastReceiver extends Thread {
@@ -70,9 +69,11 @@ public class MulticastReceiver extends Thread {
             } else if(received.equals("MYADDRESS")){
                 giveOwnAddress(address);
             } else if(received.startsWith("s")){
-                searchReply(received, address);
+                searchReply(received, address, 0);
             } else if(received.startsWith("GETCHUNK")){
                 sendChunk(received, address);
+            } else if(received.startsWith("es")){
+                searchReply(received, address, 1);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,7 +92,6 @@ public class MulticastReceiver extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -115,7 +115,7 @@ public class MulticastReceiver extends Thread {
     }
 
 
-    private void searchReply(String received, InetAddress packetAddress) throws IOException {
+    private void searchReply(String received, InetAddress packetAddress, int mode) throws IOException {
         System.out.println(received);
         String[] strArray = received.split(";");
         if(Integer.parseInt(strArray[3]) <= 0){
@@ -152,7 +152,7 @@ public class MulticastReceiver extends Thread {
             }
         }
 
-        String[] fileInfo = filesChecker.checkForFile(strArray[2]);
+        String[] fileInfo = filesChecker.checkForFile(strArray[2], mode);
         if(fileInfo == null){
             return;
         }

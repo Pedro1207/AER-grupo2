@@ -54,6 +54,7 @@ public class Main {
         InputStreamReader streamReader = new InputStreamReader(System.in);
         BufferedReader bufferedReader = new BufferedReader(streamReader);
         String line;
+
         while(true){
             System.out.print("Introduce search term: ");
             line = bufferedReader.readLine();
