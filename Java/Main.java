@@ -62,6 +62,7 @@ public class Main {
             while (!done) {
                 ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
                 if (fileInfos.size() > 0) {
+                    line = fileInfos.get(0).getName();
                     FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
                     FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
                     long offset = fd.download(0);
