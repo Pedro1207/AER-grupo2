@@ -16,7 +16,6 @@ public class FilesChecker {
         ArrayList<String> files = this.getAllFiles();
         String file = "";
         if(mode == 0){
-
             for(String s : files){
                 if(s.contains(searchTerm)){
                     file = s;
@@ -25,7 +24,12 @@ public class FilesChecker {
             }
         }
         else if (mode == 1){
-
+            for(String s : files){
+                if(s.equals(searchTerm)){
+                    file = s;
+                    break;
+                }
+            }
         }
 
         if(file.length() > 0){
