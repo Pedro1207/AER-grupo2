@@ -58,17 +58,21 @@ public class Main {
         while (true) {
             System.out.print("Introduce search term: ");
             line = bufferedReader.readLine();
-            ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
-            FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
-            FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
-            long offset = fd.download(0);
-            while (offset >= 0) {
-                fileInfos = fileFinder.findExactFile(line);
-                fd = new FileDownloader(fileInfos, fileHandler);
-                offset = fd.download(offset);
+            boolean done = false;
+            while (!done) {
+                ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
+                if (fileInfos.size() > 0) {
+                    FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
+                    FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
+                    long offset = fd.download(0);
+                    while (offset >= 0) {
+                        fileInfos = fileFinder.findExactFile(line);
+                        fd = new FileDownloader(fileInfos, fileHandler);
+                        offset = fd.download(offset);
+                    }
+                    done = true;
+                }
             }
-
-
         }
 
 
