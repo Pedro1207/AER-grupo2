@@ -531,7 +531,7 @@ link l6 {
 canvas c1 {
     name {Canvas1}
     wallpaper-style {tiled}
-    wallpaper {/home/nelson/AER/topologia_AER_G02/sample1-bg.gif}
+    wallpaper {/home/nelson/AER/topologia_AER_G02/sample-bg.gif}
     size {900 620}
 }
 
