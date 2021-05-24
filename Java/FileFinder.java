@@ -123,10 +123,6 @@ public class FileFinder {
             e.printStackTrace();
         }
 
-        if(fileInfos.size() == 0){
-            return null;
-        }
-
         Collections.sort(fileInfos);
         return fileInfos;
 

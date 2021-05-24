@@ -15,8 +15,11 @@ public class FileDownloader {
         this.fileHandler = fileHandler;
     }
 
-    public void download() {
+    public Long download(long initialOffset) {
         DatagramSocket socket = null;
+        boolean finished = false;
+        long offset = initialOffset;
+
         try {
 
             Publisher publisher = new Publisher();
@@ -25,7 +28,7 @@ public class FileDownloader {
                 socket.setSoTimeout(1000);
             } catch (SocketException e) {
                 e.printStackTrace();
-                return;
+                return null;
             }
 
             int messageSize = 50000;
@@ -37,7 +40,6 @@ public class FileDownloader {
             FileInfo active = this.fileInfos.get(activeHost);
 
             long size = active.getSize();
-            long offset = 0;
             int failCount = 0;
 
 
@@ -63,8 +65,6 @@ public class FileDownloader {
 
             }
 
-            boolean finished = false;
-
             while(activeHost < this.fileInfos.size() && !finished){
                 try {
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + (size - offset), active.getLocation(), 10000);
@@ -83,7 +83,6 @@ public class FileDownloader {
             }
 
 
-
         } catch (Exception e){
             System.out.println("Error.");
             e.printStackTrace();
@@ -96,7 +95,10 @@ public class FileDownloader {
             }
         }
 
+        if(!finished) return offset;
+
         System.out.println("File download finished.");
+        return (long) -1;
 
 
     }

@@ -38,7 +38,6 @@ public class HelloLoop extends Thread {
         while(true){
             try {
                 publisher.multicast("HELLO");
-                System.out.println(knownAddresses);
                 
                 for(int i = 0; i<this.knownAddresses.size(); i++){
                     /* Incrementamos 1 valor a cada um dos */

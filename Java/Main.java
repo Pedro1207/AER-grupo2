@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class Main {
-    
+
     /**
      * Variável que guarda o número a partir do qual os
      * hosts serão descartados, caso não sejam recebidos hello's
@@ -20,16 +20,16 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        if(args.length < 1){
+        if (args.length < 1) {
             System.out.println("Missing arguments. Usage: java Main <dataFolder>");
             System.exit(1);
-        } else if(!Files.exists(Path.of(args[0]))){
+        } else if (!Files.exists(Path.of(args[0]))) {
             System.out.println("Data Folder Does Not Exist.");
             System.exit(2);
         }
 
         String dataFolder = args[0];
-        if(!dataFolder.endsWith("/")){
+        if (!dataFolder.endsWith("/")) {
             dataFolder += "/";
         }
 
@@ -55,17 +55,19 @@ public class Main {
         BufferedReader bufferedReader = new BufferedReader(streamReader);
         String line;
 
-        while(true){
+        while (true) {
             System.out.print("Introduce search term: ");
             line = bufferedReader.readLine();
             ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
-            if(fileInfos == null){
-                continue;
-            } else{
-                FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
-                FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
-                fd.download();
+            FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
+            FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
+            long offset = fd.download(0);
+            while (offset >= 0) {
+                fileInfos = fileFinder.findFile(line);
+                fd = new FileDownloader(fileInfos, fileHandler);
+                offset = fd.download(offset);
             }
+
 
         }
 
