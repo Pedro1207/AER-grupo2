@@ -46,10 +46,6 @@ public class FileFinder {
             e.printStackTrace();
         }
 
-        if(fileInfos.size() == 0){
-            return null;
-        }
-
         ArrayList<String> uniqueFiles = new ArrayList<>();
         ArrayList<Long> uniqueFilesSize = new ArrayList<Long>();
         for(FileInfo f : fileInfos){
@@ -116,11 +112,7 @@ public class FileFinder {
 
 
         for(int i = 0; i < addresses.size(); i++){
-            try{
                 publisher.unicast("es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10000);
-            } catch (Exception e){
-                //do nothing, host is suddenly offline
-            }
         }
 
         try {
