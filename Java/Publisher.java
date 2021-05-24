@@ -1,4 +1,3 @@
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.*;
 
@@ -23,7 +22,11 @@ public class Publisher {
         buf = message.getBytes();
 
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-        socket.send(packet);
+        try{
+            socket.send(packet);
+        } catch (Exception e){
+            //Do nothing, host went offline
+        }
         socket.close();
     }
 
