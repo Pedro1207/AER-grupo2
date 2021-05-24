@@ -20,6 +20,10 @@ public class FileDownloader {
         boolean finished = false;
         long offset = initialOffset;
 
+        if(this.fileInfos.size() == 0){
+            return initialOffset;
+        }
+
         try {
 
             Publisher publisher = new Publisher();
