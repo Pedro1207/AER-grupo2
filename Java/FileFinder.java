@@ -1,3 +1,5 @@
+import com.sun.source.tree.CompoundAssignmentTree;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -114,7 +116,11 @@ public class FileFinder {
 
 
         for(int i = 0; i < addresses.size(); i++){
-            publisher.unicast("es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10000);
+            try{
+                publisher.unicast("es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10000);
+            } catch (Exception e){
+                //do nothing, host is suddenly offline
+            }
         }
 
         try {

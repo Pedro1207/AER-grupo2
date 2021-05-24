@@ -63,7 +63,7 @@ public class Main {
             FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
             long offset = fd.download(0);
             while (offset >= 0) {
-                fileInfos = fileFinder.findFile(line);
+                fileInfos = fileFinder.findExactFile(line);
                 fd = new FileDownloader(fileInfos, fileHandler);
                 offset = fd.download(offset);
             }
