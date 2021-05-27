@@ -51,39 +51,45 @@ public class Main {
 
 
         FileFinder fileFinder = new FileFinder(knownAddresses, ownAdress);
-        InputStreamReader streamReader = new InputStreamReader(System.in);
-        BufferedReader bufferedReader = new BufferedReader(streamReader);
         String line;
 
-        while (true) {
-            System.out.print("Introduce search term: ");
-            line = bufferedReader.readLine();
-            boolean done = false;
-
-            while (!done) {
-                ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
-
-                if(fileInfos == null){
-                    done = true;
-                }
-
-                else if (fileInfos.size() > 0) {
-                    line = fileInfos.get(0).getName();
-                    FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
-                    FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
-                    long offset = fd.download(0);
-
-                    while (offset >= 0) {
-                        fileInfos = fileFinder.findExactFile(line);
-                        fd = new FileDownloader(fileInfos, fileHandler);
-                        offset = fd.download(offset);
-                    }
-                    
-                    done = true;
-                }
+        int opcao = 1;
+        while (opcao != 2) {
+            opcao = View.menu();
+            if(opcao == 1){
+                pesquisar(dataFolder, fileFinder);
             }
         }
+        System.out.println("Obrigado por usar o P2P-Network!!!");
 
+    }
 
+    private static void pesquisar(String dataFolder, FileFinder fileFinder) throws IOException {
+        String line;
+        line = View.menuPesquisa();
+        boolean done = false;
+
+        while (!done) {
+            ArrayList<FileInfo> fileInfos = fileFinder.findFile(line);
+
+            if(fileInfos == null){
+                done = true;
+            }
+
+            else if (fileInfos.size() > 0) {
+                line = fileInfos.get(0).getName();
+                FileHandler fileHandler = new FileHandler(dataFolder + fileInfos.get(0).getName());
+                FileDownloader fd = new FileDownloader(fileInfos, fileHandler);
+                long offset = fd.download(0);
+
+                while (offset >= 0) {
+                    fileInfos = fileFinder.findExactFile(line);
+                    fd = new FileDownloader(fileInfos, fileHandler);
+                    offset = fd.download(offset);
+                }
+
+                done = true;
+            }
+        }
     }
 }
