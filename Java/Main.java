@@ -34,15 +34,16 @@ public class Main {
 
         List<InetAddress> knownAddresses = Collections.synchronizedList(new ArrayList<>());
         List<Integer> dropControlList = Collections.synchronizedList(new ArrayList<>());
+        ArrayList<RandomNumberSaver> randomNumberSavers = new ArrayList<>();
 
-        MulticastReceiver multicastReceiver = new MulticastReceiver(knownAddresses, dropControlList, dataFolder);
+        MulticastReceiver multicastReceiver = new MulticastReceiver(knownAddresses, dropControlList, dataFolder, randomNumberSavers);
         Thread t = new Thread(multicastReceiver);
         t.start();
 
         InetAddress ownAdress = publisher.getOwnAddress();
         multicastReceiver.setOwnAdrress(ownAdress);
 
-        HelloLoop helloLoop = new HelloLoop(MAX_TIMES_WITHOUT_HELLO, knownAddresses, dropControlList);
+        HelloLoop helloLoop = new HelloLoop(MAX_TIMES_WITHOUT_HELLO, knownAddresses, dropControlList, randomNumberSavers);
         Thread t2 = new Thread(helloLoop);
         t2.start();
 

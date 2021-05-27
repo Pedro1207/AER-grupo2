@@ -24,10 +24,12 @@ public class MulticastReceiver extends Thread {
     private InetAddress ownAdrress;
     private final FilesChecker filesChecker;
     private String dataFolder;
+    private final ArrayList<RandomNumberSaver> randomNumberSavers;
 
-    public MulticastReceiver(List<InetAddress> knownAddresses, List<Integer> dropControlList, String dataFolder) {
+    public MulticastReceiver(List<InetAddress> knownAddresses, List<Integer> dropControlList, String dataFolder, ArrayList<RandomNumberSaver> randomNumberSavers) {
         this.knownAddresses = knownAddresses;
         this.dropControlList = dropControlList;
+        this.randomNumberSavers = randomNumberSavers;
         publisher = new Publisher();
         ownAdrress = null;
         this.filesChecker = new FilesChecker(dataFolder);
@@ -114,6 +116,14 @@ public class MulticastReceiver extends Thread {
         }
     }
 
+    private boolean isLooped(int rNumber){
+        for(int i = 0; i < this.randomNumberSavers.size(); i++){
+            if(rNumber == this.randomNumberSavers.get(i).getRandomNumber()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void searchReply(String received, InetAddress packetAddress, int mode) throws IOException {
         System.out.println(received);
@@ -125,6 +135,10 @@ public class MulticastReceiver extends Thread {
         ArrayList<InetAddress> addresses = new ArrayList<>();
 
         synchronized (this.knownAddresses){
+            if(isLooped(Integer.parseInt(strArray[4]))){
+                return;
+            }
+
             for (InetAddress knownAddress : this.knownAddresses) {
                 try {
                     addresses.add(InetAddress.getByName(knownAddress.getHostAddress()));

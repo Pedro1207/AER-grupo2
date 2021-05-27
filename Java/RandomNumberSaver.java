@@ -23,4 +23,8 @@ public class RandomNumberSaver {
     public void setTtl(int ttl) {
         this.ttl = ttl;
     }
+
+    public void reduceOne(){
+        this.ttl = this.ttl - 1;
+    }
 }
