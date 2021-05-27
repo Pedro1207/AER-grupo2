@@ -1,9 +1,8 @@
-import com.sun.source.tree.CompoundAssignmentTree;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +35,11 @@ public class FileFinder {
         t.start();
 
 
+        SecureRandom sr = new SecureRandom();
+        int randomNumber = sr.nextInt();
+
         for(int i = 0; i < addresses.size(); i++){
-            publisher.unicast("s;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10000);
+            publisher.unicast("s;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5;" + randomNumber, addresses.get(i), 10000);
         }
 
         try {

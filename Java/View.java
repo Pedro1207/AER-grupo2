@@ -11,7 +11,7 @@ public class View {
 
         System.out.println("\n***********************************************************");
         System.out.println("************************P2P-NETWORK************************");
-        System.out.println("\n***************************MENU**************************\n");
+        System.out.println("\n****************************MENU***************************\n");
 
         System.out.println("[1] -> Pesquisa por ficheiros ");
         System.out.println("[2] -> Sair \n");
@@ -40,7 +40,7 @@ public class View {
 
         System.out.println("\n***********************************************************");
         System.out.println("************************P2P-NETWORK************************");
-        System.out.println("\n*************************PESQUISA*************************\n");
+        System.out.println("\n**************************PESQUISA*************************\n");
 
         System.out.print("Insira o termo a pesquisar: ");
 
