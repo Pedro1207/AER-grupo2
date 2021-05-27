@@ -1,7 +1,4 @@
-import javax.xml.crypto.Data;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,12 +53,12 @@ public class Main {
         int opcao = 1;
         while (opcao != 2) {
             opcao = View.menu();
-            if(opcao == 1){
+            if (opcao == 1) {
                 pesquisar(dataFolder, fileFinder);
             }
         }
         System.out.println("Obrigado por usar o P2P-Network!!!");
-
+        System.exit(0);
     }
 
     private static void pesquisar(String dataFolder, FileFinder fileFinder) throws IOException {
