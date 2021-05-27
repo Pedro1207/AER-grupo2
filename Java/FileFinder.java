@@ -112,9 +112,12 @@ public class FileFinder {
         Thread t = new Thread(fal);
         t.start();
 
+        SecureRandom sr = new SecureRandom();
+        int randomNumber = sr.nextInt();
+
 
         for(int i = 0; i < addresses.size(); i++){
-                publisher.unicast("es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5", addresses.get(i), 10000);
+                publisher.unicast("es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5;" + randomNumber, addresses.get(i), 10000);
         }
 
         try {
