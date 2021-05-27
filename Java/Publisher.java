@@ -34,8 +34,6 @@ public class Publisher {
         DatagramSocket socket = new DatagramSocket(10010);
         socket.setSoTimeout(500);
 
-        this.multicast("MYADDRESS");
-
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -50,6 +48,7 @@ public class Publisher {
 
         while(!found){
             try{
+                this.multicast("MYADDRESS");
                 socket.receive(packet);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 address = InetAddress.getByName(received);
