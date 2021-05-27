@@ -139,6 +139,8 @@ public class MulticastReceiver extends Thread {
                 return;
             }
 
+            this.randomNumberSavers.add(new RandomNumberSaver(Integer.parseInt(strArray[4]), 2));
+
             for (InetAddress knownAddress : this.knownAddresses) {
                 try {
                     addresses.add(InetAddress.getByName(knownAddress.getHostAddress()));
@@ -161,7 +163,7 @@ public class MulticastReceiver extends Thread {
         for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
             if(!sendAddress.equals(packetAddress) && !sendAddress.equals(returnAddress)){
-                publisher.unicast("s;" + strArray[1] + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1), sendAddress, 10000);
+                publisher.unicast("s;" + strArray[1] + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1) + ";" + strArray[4], sendAddress, 10000);
 
             }
         }
