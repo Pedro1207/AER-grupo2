@@ -1,5 +1,4 @@
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 public class FileHandler {
 	
@@ -26,7 +25,8 @@ public class FileHandler {
 	 */
 	public byte[] readBytes(int from, int to)
 			throws IOException {
-		
+
+		if(View.debug) System.out.println("Read from file from byte" + from + " to byte " + to);
 		FileInputStream in = new FileInputStream(path);
 		int diff = to-from, how;
 		byte[] content = new byte[diff];
@@ -46,7 +46,7 @@ public class FileHandler {
 	public void writeBytes(byte[] content, int from, int to)
 			throws IOException{
 
-		System.out.println(from + " +++ " + to);
+		if(View.debug) System.out.println("Writing to file from byte" + from + " to byte " + to);
 
 		RandomAccessFile raf = new RandomAccessFile(path,"rw");
 		int diff = to-from;

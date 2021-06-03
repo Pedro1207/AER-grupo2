@@ -4,6 +4,9 @@ import java.io.InputStreamReader;
 
 public class View {
 
+    static boolean debug = false;
+    static boolean hostDebug = false;
+
     public static int menu() throws IOException {
 
         InputStreamReader streamReader = new InputStreamReader(System.in);
@@ -19,16 +22,41 @@ public class View {
         while(true){
             System.out.print("Insira a opção: ");
             String line = bufferedReader.readLine();
-            try{
-                int opcao = Integer.parseInt(line);
-                if(opcao != 1 && opcao != 2){
+
+            if(line.equals("debug")){
+                if(!debug){
+                    debug = true;
+                    System.out.println("Debugging is now turned on.");
+                } else{
+                    debug = false;
+                    System.out.println("Debugging is now turned off.");
+
+                }
+            }
+
+            else if(line.equals("hosts")){
+                if(!hostDebug){
+                    hostDebug = true;
+                    System.out.println("Host debugging is now turned on.");
+                } else{
+                    hostDebug = false;
+                    System.out.println("Host debugging is now turned off.");
+
+                }
+            }
+
+            else{
+                try{
+                    int opcao = Integer.parseInt(line);
+                    if(opcao != 1 && opcao != 2){
+                        System.out.println("Opção inválida.");
+                    }
+                    else{
+                        return opcao;
+                    }
+                } catch (NumberFormatException e){
                     System.out.println("Opção inválida.");
                 }
-                else{
-                    return opcao;
-                }
-            } catch (NumberFormatException e){
-                System.out.println("Opção inválida.");
             }
         }
     }

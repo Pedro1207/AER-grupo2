@@ -65,6 +65,8 @@ public class MulticastReceiver extends Thread {
 
     private void interpret(String received, InetAddress address) {
 
+        if(View.debug) System.out.println("Packet received: " + received);
+
         try {
             if (this.ownAdrress != null && received.equals("HELLO")) {
                 registerAddress(address);
@@ -83,13 +85,13 @@ public class MulticastReceiver extends Thread {
     }
 
     private void sendChunk(String received, InetAddress address) {
-        System.out.println("Sending chunk");
         String[] strArray = received.split(";");
 
         FileHandler fileHandler = new FileHandler(dataFolder + strArray[1]);
 
         try {
             byte[] bytes = fileHandler.readBytes(Integer.parseInt(strArray[2]), Integer.parseInt(strArray[2]) + Integer.parseInt(strArray[3]));
+            if(View.debug) System.out.println("Sending requested chunk.");
             publisher.unicast("CHUNK;" + strArray[1] + ";" + strArray[2] + ";" + strArray[3] + ";" + new String(bytes, StandardCharsets.UTF_8), address, 10001);
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,6 +110,7 @@ public class MulticastReceiver extends Thread {
     private void registerAddress(InetAddress address) throws IOException {
         synchronized (knownAddresses) {
             if (!this.knownAddresses.contains(address) && !this.ownAdrress.equals(address)) {
+                if(View.debug) System.out.println("Adding new host: " + address);
                 knownAddresses.add(address);
                 this.dropControlList.add(0);
             } else if(!this.ownAdrress.equals(address)){
@@ -126,7 +129,6 @@ public class MulticastReceiver extends Thread {
     }
 
     private void searchReply(String received, InetAddress packetAddress, int mode) throws IOException {
-        System.out.println(received);
         String[] strArray = received.split(";");
         if(Integer.parseInt(strArray[3]) <= 0){
             return;
@@ -159,10 +161,12 @@ public class MulticastReceiver extends Thread {
             e.printStackTrace();
         }
 
+        if(View.debug) System.out.println("* Forwarding request.");
         InetAddress sendAddress;
         for(int i = 0; i < addresses.size(); i++){
             sendAddress = addresses.get(i);
             if(!sendAddress.equals(packetAddress) && !sendAddress.equals(returnAddress)){
+                if(View.debug) System.out.println("* " + "s;" + strArray[1] + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1) + ";" + strArray[4]);
                 publisher.unicast("s;" + strArray[1] + ";" + strArray[2] + ";" + (Integer.parseInt(strArray[3]) - 1) + ";" + strArray[4], sendAddress, 10000);
 
             }
@@ -173,6 +177,7 @@ public class MulticastReceiver extends Thread {
             return;
         }
         else{
+            if(View.debug) System.out.println("Informing I have the file: " + "HAVEFILE;" + this.ownAdrress.getHostName() + ";" + fileInfo[0] + ";" + fileInfo[1]);
             publisher.unicast("HAVEFILE;" + this.ownAdrress.getHostName() + ";" + fileInfo[0] + ";" + fileInfo[1], returnAddress, 10002);
         }
 

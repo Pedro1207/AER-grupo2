@@ -37,8 +37,9 @@ public class FileFinder {
 
         SecureRandom sr = new SecureRandom();
         int randomNumber = sr.nextInt();
-
+        if(View.debug) System.out.println("* Sending interest packets");
         for(int i = 0; i < addresses.size(); i++){
+            if(View.debug) System.out.println("* " + "s;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5;" + randomNumber);
             publisher.unicast("s;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5;" + randomNumber, addresses.get(i), 10000);
         }
 
@@ -117,6 +118,7 @@ public class FileFinder {
 
 
         for(int i = 0; i < addresses.size(); i++){
+                if(View.debug) System.out.println("Sending exact interest packet: " + "es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5;" + randomNumber);
                 publisher.unicast("es;" + this.ownAddress.getHostName() + ";" + searchTerm + ";5;" + randomNumber, addresses.get(i), 10000);
         }
 

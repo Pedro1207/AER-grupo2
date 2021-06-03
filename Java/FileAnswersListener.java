@@ -52,9 +52,9 @@ public class FileAnswersListener implements Runnable {
 
     private FileInfo interpretPacket(DatagramPacket packet, long time) throws UnknownHostException {
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println(received);
 
         if (received.startsWith("HAVEFILE")) {
+            if(View.debug) System.out.println("Received file packet: " + received);
             String[] strArray;
             FileInfo fileInfo;
             strArray = received.split(";");
