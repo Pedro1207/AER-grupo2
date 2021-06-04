@@ -111,7 +111,7 @@ public class FileDownloader {
         if (!received.startsWith("CHUNK")) {
             return;
         }
-        if(View.debug) System.out.println("Received chunk packet: " + received);
+        if(View.debug) System.out.println("Received chunk packet");
 
         String[] strArray = received.split(";", 5);
         try {
