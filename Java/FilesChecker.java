@@ -16,7 +16,7 @@ public class FilesChecker {
         ArrayList<String> files = this.getAllFiles();
         String file = "";
         if(mode == 0){
-            if(View.debug) System.out.println("Looking in files for a partial match with \"" + searchTerm + "\"");
+            if(View.debug) System.out.println("***Looking in files for a partial match with \"" + searchTerm + "\"");
             for(String s : files){
                 if(s.contains(searchTerm)){
                     file = s;
@@ -25,7 +25,7 @@ public class FilesChecker {
             }
         }
         else if (mode == 1){
-            if(View.debug) System.out.println("Looking in files for an exact match with \"" + searchTerm + "\"");
+            if(View.debug) System.out.println("***Looking in files for an exact match with \"" + searchTerm + "\"");
             for(String s : files){
                 if(s.equals(searchTerm)){
                     file = s;
@@ -39,7 +39,7 @@ public class FilesChecker {
             long bytes;
             try {
                 bytes = Files.size(path);
-                if(View.debug) System.out.println("File found. Name: \"" + file + "\" Size: " + bytes + "bytes");
+                if(View.debug) System.out.println("***File found. Name: \"" + file + "\" Size: " + bytes + "bytes");
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;

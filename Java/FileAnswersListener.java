@@ -54,7 +54,7 @@ public class FileAnswersListener implements Runnable {
         String received = new String(packet.getData(), 0, packet.getLength());
 
         if (received.startsWith("HAVEFILE")) {
-            if(View.debug) System.out.println("Received file packet: " + received);
+            if(View.debug) System.out.println("***Received file packet: " + received);
             String[] strArray;
             FileInfo fileInfo;
             strArray = received.split(";");

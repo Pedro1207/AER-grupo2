@@ -64,7 +64,7 @@ public class HelloLoop extends Thread {
                     }
                 }
 
-                if(View.hostDebug) System.out.println("Hosts conhecidos: " + knownAddresses);
+                if(View.hostDebug) System.out.println("***Hosts conhecidos: " + knownAddresses);
                 Thread.sleep(1000);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();

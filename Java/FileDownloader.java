@@ -49,7 +49,7 @@ public class FileDownloader {
 
             while (size - offset > messageSize && activeHost < this.fileInfos.size()) {
                 try {
-                    if(View.debug) System.out.println("Asking for chunk: " + "GETCHUNK;" + active.getName() + ";" + offset + ";" + messageSize);
+                    if(View.debug) System.out.println("***Asking for chunk: " + "GETCHUNK;" + active.getName() + ";" + offset + ";" + messageSize);
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + messageSize, active.getLocation(), 10000);
                     socket.receive(packet);
                     writePacketToFile(packet);
@@ -69,7 +69,7 @@ public class FileDownloader {
 
             while(activeHost < this.fileInfos.size() && !finished){
                 try {
-                    if(View.debug) System.out.println("Asking for chunk: " + "GETCHUNK;" + active.getName() + ";" + offset + ";" + messageSize);
+                    if(View.debug) System.out.println("***Asking for chunk: " + "GETCHUNK;" + active.getName() + ";" + offset + ";" + messageSize);
                     publisher.unicast("GETCHUNK;" + active.getName() + ";" + offset + ";" + (size - offset), active.getLocation(), 10000);
                     socket.receive(packet);
                     writePacketToFile(packet);
@@ -111,7 +111,7 @@ public class FileDownloader {
         if (!received.startsWith("CHUNK")) {
             return;
         }
-        if(View.debug) System.out.println("Received chunk packet");
+        if(View.debug) System.out.println("***Received chunk packet");
 
         String[] strArray = received.split(";", 5);
         try {
