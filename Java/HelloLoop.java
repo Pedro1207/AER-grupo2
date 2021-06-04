@@ -44,27 +44,25 @@ public class HelloLoop extends Thread {
             try {
                 publisher.multicast("HELLO");
 
-                synchronized (this.knownAddresses){
+                synchronized (this.knownAddresses) {
 
-                    for(int i = 0; i<this.knownAddresses.size(); i++){
+                    for (int i = 0; i < this.knownAddresses.size(); i++) {
                         /* Incrementamos 1 valor a cada um dos */
-                        this.dropControlList.set(i,this.dropControlList.get(i) + 1);
-                        if(this.dropControlList.get(i) >= this.max_times_without_hello) {
+                        this.dropControlList.set(i, this.dropControlList.get(i) + 1);
+                        if (this.dropControlList.get(i) >= this.max_times_without_hello) {
                             this.knownAddresses.remove(i);
                             this.dropControlList.remove(i);
                             --i;
                         }
                     }
 
-                    for(int i = this.randomNumberSavers.size() - 1; i >= 0; i--){
+                    for (int i = this.randomNumberSavers.size() - 1; i >= 0; i--) {
                         this.randomNumberSavers.get(i).reduceOne();
-                        if(this.randomNumberSavers.get(i).getTtl() <= 0){
+                        if (this.randomNumberSavers.get(i).getTtl() <= 0) {
                             this.randomNumberSavers.remove(i);
                         }
                     }
                 }
-
-                if(View.hostDebug) System.out.println("Hosts conhecidos: " + knownAddresses);
                 Thread.sleep(1000);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
