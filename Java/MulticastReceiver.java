@@ -65,18 +65,20 @@ public class MulticastReceiver extends Thread {
 
     private void interpret(String received, InetAddress address) {
 
-        if(View.debug) System.out.println("Packet received: " + received);
-
         try {
             if (this.ownAdrress != null && received.equals("HELLO")) {
                 registerAddress(address);
             } else if(received.equals("MYADDRESS")){
+                if(View.debug) System.out.println("Packet received: " + received);
                 giveOwnAddress(address);
             } else if(received.startsWith("s")){
+                if(View.debug) System.out.println("Packet received: " + received);
                 searchReply(received, address, 0);
             } else if(received.startsWith("GETCHUNK")){
+                if(View.debug) System.out.println("Packet received: " + received);
                 sendChunk(received, address);
             } else if(received.startsWith("es")){
+                if(View.debug) System.out.println("Packet received: " + received);
                 searchReply(received, address, 1);
             }
         } catch (IOException e) {
